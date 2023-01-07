@@ -1,0 +1,51 @@
+{
+  "name": "doix-db",
+  "version": "0.0.1",
+  "description": "Shared database related code for doix",
+  "main": "index.js",
+  "files": [
+    "/lib",
+    "/badges"
+  ],
+  "scripts": {
+    "test": "jest",
+    "test-ci": "jest --ci --coverage"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "lib/**/*.js"
+    ],
+    "coverageReporters": [
+      "clover",
+      "json",
+      "lcov",
+      "text",
+      "json-summary"
+    ],
+    "verbose": false,
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/__tests__/data",
+      "/__tests__/lib"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/do-/node-doix-db.git"
+  },
+  "author": "Dmitry Ovsyanko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/do-/node-doix-db/issues"
+  },
+  "homepage": "https://github.com/do-/node-doix-db#readme",
+  "peerDependencies": {
+    "doix": "^0.0.34"
+  },
+  "devDependencies": {
+    "jest": "^29.3.1"
+  },
+  "dependencies": {
+    "string-escape-map": "^1.0.0"
+  }
+}
