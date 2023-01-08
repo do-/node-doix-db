@@ -31,6 +31,7 @@ test ('pattern', () => {
 	tst ('text /^[0-9\\/]+$/',    {type: 'text', pattern: '^[0-9\\/]+$'})
 	tst ('\t  text  = OK    /^(OK|ERROR)$/    //  \t\t\t  status', {type: 'text', pattern: '^(OK|ERROR)$', default: 'OK', comment: 'status'})
 
+	expect (() => new DbColumn ('text=/^/')).toThrow ()
 	expect (() => new DbColumn ('text / // ?')).toThrow ()
 
 })
@@ -44,5 +45,28 @@ test ('range', () => {
 	tst ('date = 1980-01-01 { 1970-01-01 .. NOW  }   /-01$/ // created ', {type: 'date', min: '1970-01-01', default: '1980-01-01', max: 'NOW', pattern: '-01$', comment: 'created'})
 
 	expect (() => new DbColumn ('date }')).toThrow ()
+	expect (() => new DbColumn ('date {}')).toThrow ()
+
+})
+
+test ('dimension', () => {
+
+	tst ('char(1)', {type: 'char', size: 1})
+	tst ('decimal (10, 2)', {type: 'decimal', size: 10, scale: 2})
+
+	tst (' \t \t decimal (10, 2) = 0 { 0.00 .. 1000.00 } /00$/ // \t\t\t salary ', {
+		type: 'decimal', 
+		size: 10,
+		scale: 2,
+		min: '0.00', 
+		default: '0', 
+		max: '1000.00', 
+		pattern: '00$', 
+		comment: 'salary'
+	})
+
+	expect (() => new DbColumn ('date )')).toThrow ()
+	expect (() => new DbColumn ('decimal (10,zz)')).toThrow ()
+	expect (() => new DbColumn ('decimal (+,1)')).toThrow ()
 
 })
