@@ -3,8 +3,14 @@ const {DbColumn, DbReference} = require ('..')
 test ('Object', () => {
 
 	const o = {name: 'id', type: 'int'}
+	const od = {name: 'id', type: 'int', default: 1}
+	const on = {name: 'id', type: 'int', nullable: false}
+	const ond = {name: 'id', type: 'int', default: 1, nullable: true}
 
-	expect (new DbColumn (o)).toEqual (o)
+	expect (new DbColumn (o)).toEqual ({...o, nullable: true})
+	expect (new DbColumn (od)).toEqual ({...od, nullable: false})
+	expect (new DbColumn (on)).toEqual (on)
+	expect (new DbColumn (ond)).toEqual (ond)
 	expect (new DbReference (o)).toEqual ({...o, on: {}})
 
 })
