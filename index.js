@@ -7,4 +7,5 @@ module.exports = {
 	DbTable: require ('./lib/DbTable.js'),
 	DbView: require ('./lib/DbView.js'),
 	DbObjectTypeDetector: require ('./lib/DbObjectTypeDetector.js'),
+	DbObjectMap: require ('./lib/DbObjectMap.js'),
 }
