@@ -3,10 +3,21 @@ const {DbRelation} = require ('..')
 test ('bad', () => {
 
 	expect (() => new DbRelation ({})).toThrow ()
-	expect (() => new DbRelation ({columns: {}})).toThrow ()
 	expect (() => new DbRelation ({pk: []})).toThrow ()
 	expect (() => new DbRelation ({columns: 0, pk: []})).toThrow ()
 	expect (() => new DbRelation ({columns: {}, pk: ['id']})).toThrow ()
+
+})
+
+test ('not bad', () => {
+
+	const r = new DbRelation ({
+		columns: {
+			id: {type: 'int'},
+		},	
+	})
+	
+	expect (r.pk).toStrictEqual ([])
 
 })
 

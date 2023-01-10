@@ -4,4 +4,7 @@ module.exports = {
 	DbReference: require ('./lib/DbReference.js'),
 	DbObjectMerger: require ('./lib/DbObjectMerger.js'),
 	DbRelation: require ('./lib/DbRelation.js'),	
+	DbTable: require ('./lib/DbTable.js'),
+	DbView: require ('./lib/DbView.js'),
+	DbObjectTypeDetector: require ('./lib/DbObjectTypeDetector.js'),
 }
