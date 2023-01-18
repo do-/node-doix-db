@@ -22,6 +22,8 @@ test ('basic', () => {
 
 	const m = new DbModel ({dir, foo: undefined})
 	
+	m.load ()
+	
 	expect ([...m.map.keys ()]).toStrictEqual (['roles'])
 	
 	const roles = m.map.get ('roles')
