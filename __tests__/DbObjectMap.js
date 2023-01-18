@@ -1,4 +1,4 @@
-const {DbObjectMap, DbObjectMerger, DbTable, DbView, DbObjectTypeDetector} = require ('..')
+const {DbModel, DbObjectMap, DbObjectMerger, DbTable, DbView, DbObjectTypeDetector} = require ('..')
 const Path = require ('path')
 
 const r = () => ['root1'].map (i => Path.join (__dirname, 'data', i))
@@ -20,13 +20,11 @@ test ('basic', () => {
 
 	jest.resetModules ()
 
-	const m = new DbObjectMap ({dir, foo: undefined})
+	const m = new DbModel ({dir, foo: undefined})
 	
-	m.load ()
+	expect ([...m.map.keys ()]).toStrictEqual (['roles'])
 	
-	expect ([...m.keys ()]).toStrictEqual (['roles'])
-	
-	const roles = m.get ('roles')
+	const roles = m.map.get ('roles')
 	
 	expect (roles).toBeInstanceOf (DbTable)
 	expect (roles.pk).toStrictEqual (['id'])
