@@ -9,4 +9,5 @@ module.exports = {
 	DbObjectTypeDetector: require ('./lib/DbObjectTypeDetector.js'),
 	DbObjectMap: require ('./lib/DbObjectMap.js'),
 	DbModel: require ('./lib/DbModel.js'), 
+	DbPool: require ('./lib/DbPool.js'), 
 }

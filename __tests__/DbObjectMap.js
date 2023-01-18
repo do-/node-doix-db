@@ -10,6 +10,8 @@ const dir = {
 
 test ('bad', () => {
 
+	expect (() => new DbModel ({dir, db: 0})).toThrow ()
+	expect (() => new DbModel ({dir, zzzzz: 0})).toThrow ()
 	expect (() => new DbObjectMap ({dir, zzzzz: 0})).toThrow ()
 	expect (() => new DbObjectMap ({dir, merger: 0})).toThrow ()
 	expect (() => new DbObjectMap ({dir, detector: 0})).toThrow ()
@@ -22,7 +24,7 @@ test ('basic', () => {
 
 	const m = new DbModel ({dir, foo: undefined})
 	
-	m.load ()
+	m.loadModules ()
 	
 	expect ([...m.map.keys ()]).toStrictEqual (['roles'])
 	
@@ -45,7 +47,7 @@ test ('other type', () => {
 		getClass () {return DbView}
 	}
 
-	const m = new DbObjectMap ({dir, detector: new DD ()})
+	const m = new DbObjectMap ({dir, detector: new DD (), foo: undefined})
 
 	m.load ()
 
