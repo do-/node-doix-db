@@ -1,6 +1,7 @@
 const {ConsoleLogger} = require ('doix')
 const {DbPool, DbModel, DbEventLogger} = require ('..')
 const Path = require ('path')
+const EventEmitter = require ('events')
 
 const r = () => ['root1'].map (i => Path.join (__dirname, 'data', i))
 
@@ -17,7 +18,7 @@ test ('pojo', () => {
 
 })
 
-test ('model', () => {
+test ('model', async () => {
 
 	jest.resetModules ()
 
@@ -32,7 +33,17 @@ test ('model', () => {
 	expect (model.db).toBe (pool)
 
 	expect (pool.model).toBe (model)
+	expect (pool.globals.model).toBe (model)
 	expect (pool.logger).toBe (logger)
 	expect (pool.eventLoggerClass).toBe (DbEventLogger)
+		
+	const job = new EventEmitter ()
+	
+	pool.acquire = () => ({})
+	pool.wrapper = EventEmitter
+		
+	await pool.toSet (job, 'db')
+	
+	expect (job.db.model).toBe (model)
 
 })
