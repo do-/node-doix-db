@@ -12,7 +12,7 @@ test ('bad', () => {
 
 	expect (() => new DbModel ({dir, db: 0})).toThrow ()
 	expect (() => new DbModel ({dir, zzzzz: 0})).toThrow ()
-	expect (() => new DbObjectMap ({dir, zzzzz: 0})).toThrow ()
+	expect (() => new DbObjectMap ({dir, z: undefined, zzzzz: 0})).toThrow ()
 	expect (() => new DbObjectMap ({dir, merger: 0})).toThrow ()
 	expect (() => new DbObjectMap ({dir, detector: 0})).toThrow ()
 
@@ -47,11 +47,11 @@ test ('other type', () => {
 		getClass () {return DbView}
 	}
 
-	const m = new DbObjectMap ({dir, detector: new DD (), foo: undefined})
+	const m = new DbModel ({dir, detector: new DD (), foo: undefined})
 
-	m.load ()
+	m.loadModules ()
 
-	const roles = m.get ('roles')
+	const roles = m.map.get ('roles')
 
 	expect (roles).toBeInstanceOf (DbView)
 				
@@ -61,13 +61,13 @@ test ('extension 1', () => {
 
 	jest.resetModules ()
 
-	const m = new DbObjectMap ({dir})
+	const m = new DbModel ({dir})
 	
-	m.merger.on ('complete', o => {o.comment = o.label; delete o.label})
+	m.map.merger.on ('complete', o => {o.comment = o.label; delete o.label})
 
-	m.load ()
+	m.loadModules ()
 	
-	const roles = m.get ('roles')
+	const roles = m.map.get ('roles')
 	
 	expect (roles.comment).toBe ('Roles')
 				
@@ -81,11 +81,11 @@ test ('extension 2', () => {
 	
 	merger.on ('complete', o => {o.comment = o.label; delete o.label})
 
-	const m = new DbObjectMap ({dir, merger})
+	const m = new DbModel ({dir, merger})
 
-	m.load ()
+	m.loadModules ()
 
-	const roles = m.get ('roles')
+	const roles = m.map.get ('roles')
 	
 	expect (roles.comment).toBe ('Roles')
 				
