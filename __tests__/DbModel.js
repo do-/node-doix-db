@@ -14,7 +14,7 @@ test ('bad', () => {
 	expect (() => new DbModel ({dir, zzzzz: 0})).toThrow ()
 	expect (() => new DbObjectMap ({dir, z: undefined, zzzzz: 0})).toThrow ()
 	expect (() => new DbObjectMap ({dir, merger: 0})).toThrow ()
-	expect (() => new DbObjectMap ({dir, detector: 0})).toThrow ()
+	expect (() => new DbModel ({dir, detector: 0})).toThrow ()
 
 })
 
