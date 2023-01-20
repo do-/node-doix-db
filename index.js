@@ -10,4 +10,5 @@ module.exports = {
 	DbObjectMap: require ('./lib/DbObjectMap.js'),
 	DbModel: require ('./lib/DbModel.js'), 
 	DbPool: require ('./lib/DbPool.js'), 
+	DbLang: require ('./lib/DbLang.js'),
 }
