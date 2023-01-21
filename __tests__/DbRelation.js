@@ -2,16 +2,17 @@ const {DbRelation} = require ('..')
 
 test ('bad', () => {
 
-	expect (() => new DbRelation ({})).toThrow ()
-	expect (() => new DbRelation ({pk: []})).toThrow ()
-	expect (() => new DbRelation ({columns: 0, pk: []})).toThrow ()
-	expect (() => new DbRelation ({columns: {}, pk: ['id']})).toThrow ()
+	expect (() => new DbRelation ({name: 't'})).toThrow ()
+	expect (() => new DbRelation ({name: 't', pk: []})).toThrow ()
+	expect (() => new DbRelation ({name: 't', columns: 0, pk: []})).toThrow ()
+	expect (() => new DbRelation ({name: 't', columns: {}, pk: ['id']})).toThrow ()
 
 })
 
 test ('not bad', () => {
 
 	const r = new DbRelation ({
+		name: 't',
 		columns: {
 			id: {type: 'int'},
 		},	
@@ -24,6 +25,7 @@ test ('not bad', () => {
 test ('good', () => {
 
 	const r = new DbRelation ({
+		name: 't',
 		columns: {
 			id: {type: 'int'},
 			label: 'text',
