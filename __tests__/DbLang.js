@@ -32,22 +32,9 @@ test ('splitName foreign', () => {
 
 })
 
-test ('adjustDbObjectName local', () => {
+test ('getDbObjectName', () => {
 
-	const o = {name: 'roles'}
-
-	lang.adjustDbObjectName (o)
-
-	expect (o.qName).toBe ('"roles"')
-
-})
-
-test ('adjustDbObjectName foreign', () => {
-
-	const o = {name: 'their.roles'}
-
-	lang.adjustDbObjectName (o)
-
-	expect (o.qName).toBe ('"their"."roles"')
+	expect (lang.getDbObjectName ({schemaName: null,    localName: 'roles'})).toBe ('"roles"')
+	expect (lang.getDbObjectName ({schemaName: 'their', localName: 'roles'})).toBe ('"their"."roles"')
 
 })

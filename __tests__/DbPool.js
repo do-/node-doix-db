@@ -49,5 +49,6 @@ test ('model', async () => {
 	expect (job.db.lang).toBe (pool.lang)
 
 	expect (model.map.get ('roles').qName).toBe ('"roles"')
+	expect (model.map.get ('roles').columns.id.qName).toBe ('"id"')
 
 })
