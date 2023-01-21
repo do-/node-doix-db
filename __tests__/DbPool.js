@@ -1,5 +1,5 @@
 const {ConsoleLogger} = require ('doix')
-const {DbPool, DbModel, DbEventLogger} = require ('..')
+const {DbPool, DbLang, DbModel, DbEventLogger} = require ('..')
 const Path = require ('path')
 const EventEmitter = require ('events')
 
@@ -25,6 +25,8 @@ test ('model', async () => {
 	const logger = ConsoleLogger.DEFAULT
 
 	const pool = new DbPool ({logger})
+	
+	pool.lang = new DbLang ()
 
 	const model = new DbModel ({dir, db: pool})
 
@@ -33,7 +35,6 @@ test ('model', async () => {
 	expect (model.db).toBe (pool)
 
 	expect (pool.model).toBe (model)
-	expect (pool.globals.model).toBe (model)
 	expect (pool.logger).toBe (logger)
 	expect (pool.eventLoggerClass).toBe (DbEventLogger)
 		
@@ -45,5 +46,6 @@ test ('model', async () => {
 	await pool.toSet (job, 'db')
 	
 	expect (job.db.model).toBe (model)
+	expect (job.db.lang).toBe (pool.lang)
 
 })
