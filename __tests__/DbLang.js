@@ -31,3 +31,23 @@ test ('splitName foreign', () => {
 	expect (o.schemaName).toBe ('their')
 
 })
+
+test ('adjustDbObjectName local', () => {
+
+	const o = {name: 'roles'}
+
+	lang.adjustDbObjectName (o)
+
+	expect (o.qName).toBe ('"roles"')
+
+})
+
+test ('adjustDbObjectName foreign', () => {
+
+	const o = {name: 'their.roles'}
+
+	lang.adjustDbObjectName (o)
+
+	expect (o.qName).toBe ('"their"."roles"')
+
+})

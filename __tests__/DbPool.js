@@ -48,4 +48,6 @@ test ('model', async () => {
 	expect (job.db.model).toBe (model)
 	expect (job.db.lang).toBe (pool.lang)
 
+	expect (model.map.get ('roles').qName).toBe ('"roles"')
+
 })
