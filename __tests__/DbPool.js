@@ -1,5 +1,5 @@
 const {ConsoleLogger} = require ('doix')
-const {DbPool, DbLang, DbModel, DbEventLogger} = require ('..')
+const {DbPool, DbLang, DbModel, DbEventLogger, DbRelation, DbTable, DbView} = require ('..')
 const Path = require ('path')
 const EventEmitter = require ('events')
 
@@ -47,8 +47,14 @@ test ('model', async () => {
 	
 	expect (job.db.model).toBe (model)
 	expect (job.db.lang).toBe (pool.lang)
+	
+	const roles = model.map.get ('roles')
 
-	expect (model.map.get ('roles').qName).toBe ('"roles"')
-	expect (model.map.get ('roles').columns.id.qName).toBe ('"id"')
+	expect (roles.qName).toBe ('"roles"')
+	expect (roles.columns.id.qName).toBe ('"id"')
+
+	expect ([...model.allInstancesOf (DbRelation)]).toStrictEqual ([roles])
+	expect ([...model.allInstancesOf (DbTable)]).toStrictEqual ([roles])
+	expect ([...model.allInstancesOf (DbView)]).toStrictEqual ([])
 
 })
