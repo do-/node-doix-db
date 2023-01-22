@@ -1,4 +1,4 @@
-const {DbModel, DbObjectMap, DbObjectMerger, DbTable, DbView, DbObjectTypeDetector} = require ('..')
+const {DbModel, DbLang, DbObjectMap, DbObjectMerger, DbTable, DbView} = require ('..')
 const Path = require ('path')
 
 const r = () => ['root1'].map (i => Path.join (__dirname, 'data', i))
@@ -14,7 +14,6 @@ test ('bad', () => {
 	expect (() => new DbModel ({dir, zzzzz: 0})).toThrow ()
 	expect (() => new DbObjectMap ({dir, z: undefined, zzzzz: 0})).toThrow ()
 	expect (() => new DbObjectMap ({dir, merger: 0})).toThrow ()
-	expect (() => new DbModel ({dir, detector: 0})).toThrow ()
 
 })
 
@@ -43,11 +42,13 @@ test ('other type', () => {
 
 	jest.resetModules ()
 
-	class DD extends DbObjectTypeDetector {
-		getClass () {return DbView}
+	class DD extends DbLang {
+		getDbObjectClass () {return DbView}
 	}
 
-	const m = new DbModel ({dir, detector: new DD (), foo: undefined})
+	const m = new DbModel ({dir, foo: undefined})
+	
+	m.lang = new DD ()
 
 	m.loadModules ()
 

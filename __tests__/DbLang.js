@@ -1,6 +1,18 @@
-const {DbLang} = require ('..')
+const {DbLang, DbTable, DbView} = require ('..')
 
 const lang = new DbLang ()
+
+test ('getDbObjectClass', () => {
+
+	expect (() => lang.getDbObjectClass ()).toThrow ()
+	expect (() => lang.getDbObjectClass (null)).toThrow ()
+	expect (() => lang.getDbObjectClass (0)).toThrow ()
+	expect (() => lang.getDbObjectClass ([])).toThrow ()
+	expect (() => lang.getDbObjectClass ({})).toThrow ()
+	expect (lang.getDbObjectClass ({columns:{}})).toBe (DbTable)
+	expect (lang.getDbObjectClass ({columns:{}, sql: ''})).toBe (DbView)
+
+})
 
 test ('quoteName', () => {
 
