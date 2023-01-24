@@ -1,4 +1,4 @@
-const {DbColumn, DbReference} = require ('..')
+const {DbColumn, DbReference, DbLang} = require ('..')
 
 test ('Object', () => {
 
@@ -136,5 +136,30 @@ test ('reference', () => {
 	expect (() => new DbColumn ('()')).toThrow ()	
 	expect (() => new DbReference ('(((')).toThrow ()
 	expect (() => new DbReference (')))')).toThrow ()
+
+})
+
+
+test ('typeDim', () => {
+
+	const lang = new DbLang ()
+
+	{
+		const col = new DbColumn ({name: 'dt', type: 'date'})
+		col.setLang (lang)	
+		expect (col.typeDim).toBe ('date')	
+	}
+
+	{
+		const col = new DbColumn ({name: 'cc', type: 'char', size: 2})
+		col.setLang (lang)	
+		expect (col.typeDim).toBe ('char(2)')
+	}
+
+	{
+		const col = new DbColumn ({name: 'amount', type: 'decimal', size: 10, scale: 2})
+		col.setLang (lang)	
+		expect (col.typeDim).toBe ('decimal(10,2)')
+	}
 
 })
