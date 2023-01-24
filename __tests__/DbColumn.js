@@ -145,6 +145,12 @@ test ('typeDim', () => {
 	const lang = new DbLang ()
 
 	{
+		const col = new DbColumn ({name: 'parent', ref: 'deps'})
+		col.setLang (lang)
+		expect (col.typeDim).toBeUndefined
+	}
+
+	{
 		const col = new DbColumn ({name: 'dt', type: 'date'})
 		col.setLang (lang)	
 		expect (col.typeDim).toBe ('DATE')	
