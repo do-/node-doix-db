@@ -147,19 +147,19 @@ test ('typeDim', () => {
 	{
 		const col = new DbColumn ({name: 'dt', type: 'date'})
 		col.setLang (lang)	
-		expect (col.typeDim).toBe ('date')	
+		expect (col.typeDim).toBe ('DATE')	
 	}
 
 	{
 		const col = new DbColumn ({name: 'cc', type: 'char', size: 2})
 		col.setLang (lang)	
-		expect (col.typeDim).toBe ('char(2)')
+		expect (col.typeDim).toBe ('CHAR(2)')
 	}
 
 	{
 		const col = new DbColumn ({name: 'amount', type: 'decimal', size: 10, scale: 2})
 		col.setLang (lang)	
-		expect (col.typeDim).toBe ('decimal(10,2)')
+		expect (col.typeDim).toBe ('DECIMAL(10,2)')
 	}
 
 })
