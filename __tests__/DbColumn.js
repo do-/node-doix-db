@@ -127,11 +127,11 @@ const tst_ref = (src, dst) => {
 
 test ('reference', () => {
 
-	tst_ref ('(users)', {type: undefined, nullable: true, reference: {relation: 'users', on: {}}})
-	tst_ref ('(users)!', {type: undefined, nullable: false, reference: {relation: 'users', on: {}}})
-	tst_ref ('(-users)', {type: undefined, nullable: true, reference: {relation: 'users', on: {DELETE: 'CASCADE'}}})
-	tst_ref ('(~users)', {type: undefined, nullable: true, reference: {relation: 'users', on: {DELETE: 'SET NULL'}}})
-	tst_ref ('(~users)=current_user()', {type: undefined, nullable: false, default: 'current_user()', reference: {relation: 'users', on: {DELETE: 'SET DEFAULT'}}})
+	tst_ref ('(users)', {type: undefined, nullable: true, reference: {targetRelationName: 'users', on: {}}})
+	tst_ref ('(users)!', {type: undefined, nullable: false, reference: {targetRelationName: 'users', on: {}}})
+	tst_ref ('(-users)', {type: undefined, nullable: true, reference: {targetRelationName: 'users', on: {DELETE: 'CASCADE'}}})
+	tst_ref ('(~users)', {type: undefined, nullable: true, reference: {targetRelationName: 'users', on: {DELETE: 'SET NULL'}}})
+	tst_ref ('(~users)=current_user()', {type: undefined, nullable: false, default: 'current_user()', reference: {targetRelationName: 'users', on: {DELETE: 'SET DEFAULT'}}})
 	
 	expect (() => new DbColumn ('()')).toThrow ()	
 	expect (() => new DbReference ('(((')).toThrow ()

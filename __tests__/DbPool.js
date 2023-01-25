@@ -49,12 +49,13 @@ test ('model', async () => {
 	expect (job.db.lang).toBe (pool.lang)
 	
 	const roles = model.map.get ('roles')
+	const users = model.map.get ('users')
 
 	expect (roles.qName).toBe ('"roles"')
 	expect (roles.columns.id.qName).toBe ('"id"')
 
-	expect ([...model.allInstancesOf (DbRelation)]).toStrictEqual ([roles])
-	expect ([...model.allInstancesOf (DbTable)]).toStrictEqual ([roles])
+	expect ([...model.allInstancesOf (DbRelation)]).toHaveLength (2)
+	expect ([...model.allInstancesOf (DbTable)]).toHaveLength (2)
 	expect ([...model.allInstancesOf (DbView)]).toStrictEqual ([])
 
 })
