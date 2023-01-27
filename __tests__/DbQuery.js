@@ -1,4 +1,4 @@
-const {DbModel, DbQuery, DbQuerySource, DbQueryColumn} = require ('..')
+const {DbModel, DbQuery, DbQueryTable, DbQueryColumn} = require ('..')
 
 const Path = require ('path')
 
@@ -22,8 +22,8 @@ test ('bad', () => {
 	q.model = m
 	expect (() => q.check ()).toThrow ()
 
-	const u = new DbQuerySource ()
-	q.src.push (u)
+	const u = new DbQueryTable ()
+	q.tables.push (u)
 	expect (() => q.check ()).toThrow ()
 
 	u.name = 'userz'
@@ -70,8 +70,8 @@ test ('basic', () => {
 	q.model = m
 	expect (() => q.check ()).toThrow ()
 
-	const u = new DbQuerySource ()
-	q.src.push (u)
+	const u = new DbQueryTable ()
+	q.tables.push (u)
 	expect (() => q.check ()).toThrow ()
 
 	u.name = 'users'
@@ -99,7 +99,7 @@ test ('ord', () => {
 	c.alias = 'ts'
 
 
-	const u = new DbQuerySource ()
+	const u = new DbQueryTable ()
 	u.alias = 'userz'
 	expect (() => u.getColumn ('id_role')).toThrow ()	
 	
@@ -110,7 +110,7 @@ test ('ord', () => {
 	u.columns [0].ord = 1
 	delete u.columns [0].alias
 	
-	q.src.push (u)
+	q.tables.push (u)
 	expect (() => q.check ()).toThrow ()
 
 	u.name = 'users'
