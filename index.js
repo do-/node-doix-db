@@ -10,5 +10,8 @@ module.exports = {
 	DbView:         require ('./lib/model/DbView.js'),
 	DbObjectMap:    require ('./lib/model/DbObjectMap.js'),
 	DbObject:       require ('./lib/model/DbObject.js'),
-	DbModel:        require ('./lib/model/DbModel.js'), 
+	DbModel:        require ('./lib/model/DbModel.js'),
+	DbQuery:        require ('./lib/query/DbQuery.js'),
+	DbQuerySource:  require ('./lib/query/DbQuerySource.js'),
+	DbQueryColumn:  require ('./lib/query/DbQueryColumn.js'),
 }
