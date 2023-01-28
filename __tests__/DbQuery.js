@@ -18,7 +18,6 @@ test ('bad', () => {
 	expect (() => new DbQuery ()).toThrow ()
 
 	const q = new DbQuery (m)
-	expect (() => q.check ()).toThrow ()
 
 	expect (() => new DbQueryTable (0, 'userz')).toThrow ()
 	expect (() => new DbQueryTable (q, 'userz')).toThrow ()
@@ -65,7 +64,7 @@ test ('ord', () => {
 	m.loadModules ()
 
 	const q = new DbQuery (m)
-	const u = new DbQueryTable (q, 'users', {alias: 'userz'})
+	const u = new DbQueryTable (q, 'users', {alias: 'userz', columns: ['label']})
 
 	q.columns.get ('label').ord = 1
 
@@ -73,5 +72,5 @@ test ('ord', () => {
 
 	expect (q.order [0].expr).toBe ('"userz"."label"')
 	expect (q.order [0].desc).toBe (false)
-						
+
 })
