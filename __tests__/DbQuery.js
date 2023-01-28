@@ -28,7 +28,7 @@ test ('basic', () => {
 	const m = new DbModel ({dir, foo: undefined})	
 	m.loadModules ()
 
-	const q = new DbQuery (m)
+	const q = m.createQuery ()
 	const dual = new DbQueryTable (q, 'DUAL')
 	const u = q.addTable ('users')
 
@@ -42,7 +42,7 @@ test ('ord', () => {
 	const m = new DbModel ({dir, foo: undefined})	
 	m.loadModules ()
 
-	const q = new DbQuery (m)
+	const q = m.createQuery ()
 	const u = q.addTable ('users', {alias: 'userz', columns: ['label']})
 
 	q.orderBy ('label')
