@@ -22,7 +22,7 @@ test ('bad', () => {
 
 })
 
-test ('basic', () => {
+test ('not in model', () => {
 
 	jest.resetModules ()
 	const m = new DbModel ({dir, foo: undefined})	
@@ -30,9 +30,19 @@ test ('basic', () => {
 
 	const q = m.createQuery ()
 	const dual = new DbQueryTable (q, 'DUAL')
+	
+})
+
+test ('basic', () => {
+
+	jest.resetModules ()
+	const m = new DbModel ({dir, foo: undefined})	
+	m.loadModules ()
+
+	const q = m.createQuery ()
 	const u = q.addTable ('users')
 
-	expect (q.columns.get ('id_role').expr).toBe ('"users"."id_role"')
+	expect (q.toParamsSql ()).toStrictEqual (['SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."id_role" AS "id_role" FROM "users" AS "users"'])
 						
 })
 
@@ -43,11 +53,11 @@ test ('ord', () => {
 	m.loadModules ()
 
 	const q = m.createQuery ()
-	const u = q.addTable ('users', {alias: 'userz', columns: ['label']})
+	const u = q.addTable ('users', {alias: 'userz', columns: ['id_role', 'label']})
 
+	q.orderBy ('id_role', true)
 	q.orderBy ('label')
 
-	expect (q.order [0].expr).toBe ('"userz"."label"')
-	expect (q.order [0].desc).toBe (false)
+	expect (q.toParamsSql ()).toStrictEqual (['SELECT "userz"."id_role" AS "id_role","userz"."label" AS "label" FROM "users" AS "userz" ORDER BY "userz"."id_role" DESC,"userz"."label"'])
 
 })
