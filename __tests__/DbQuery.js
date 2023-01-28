@@ -16,10 +16,10 @@ test ('bad', () => {
 	const m = new DbModel ({dir, foo: undefined})	
 	m.loadModules ()
 
-	const q = new DbQuery ()
-	expect (() => q.check ()).toThrow ()
+	expect (() => new DbQuery (0)).toThrow ()
 
-	q.model = m
+	const q = new DbQuery (m)
+
 	expect (() => q.check ()).toThrow ()
 
 	const u = new DbQueryTable ()
@@ -64,10 +64,9 @@ test ('basic', () => {
 	const m = new DbModel ({dir, foo: undefined})	
 	m.loadModules ()
 
-	const q = new DbQuery ()
+	const q = new DbQuery (m)
 	expect (() => q.check ()).toThrow ()
 
-	q.model = m
 	expect (() => q.check ()).toThrow ()
 
 	const u = new DbQueryTable ()
@@ -87,12 +86,8 @@ test ('ord', () => {
 	const m = new DbModel ({dir, foo: undefined})	
 	m.loadModules ()
 
-	const q = new DbQuery ()
+	const q = new DbQuery (m)
 	expect (() => q.check ()).toThrow ()
-
-	q.model = m
-	expect (() => q.check ()).toThrow ()
-
 
 	const c = new DbQueryColumn ()	
 	c.expr = 'NOW()'
