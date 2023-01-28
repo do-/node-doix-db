@@ -54,7 +54,7 @@ test ('basic', () => {
 
 	q.check ()
 
-	expect (u.getColumn ('id_role').expr).toBe ('"users"."id_role"')
+	expect (q.columns.get ('id_role').expr).toBe ('"users"."id_role"')
 						
 })
 
@@ -67,8 +67,7 @@ test ('ord', () => {
 	const q = new DbQuery (m)
 	const u = new DbQueryTable (q, 'users', {alias: 'userz'})
 
-	expect (() => u.getColumn ('guid')).toThrow ()
-	u.getColumn ('label').ord = 1
+	q.columns.get ('label').ord = 1
 
 	q.check ()
 
