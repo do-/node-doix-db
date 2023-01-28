@@ -24,14 +24,9 @@ test ('bad', () => {
 	expect (() => new DbQueryTable (q, 'userz')).toThrow ()
 
 	const u = new DbQueryTable (q, 'users')	
-	const c = new DbQueryColumn ()
+	const c = new DbQueryColumn (q, 'NOW()', 'ts')
 	u.columns = [c]
-	expect (() => q.check ()).toThrow ()
 
-	c.expr = 'NOW()'
-	expect (() => q.check ()).toThrow ()
-	
-	c.alias = 'ts'
 	c.desc = 0
 	expect (() => q.check ()).toThrow ()
 
