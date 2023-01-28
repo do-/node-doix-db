@@ -9,32 +9,22 @@ const dir = {
 	live: false,
 }
 
-
 test ('bad', () => {
 
 	jest.resetModules ()
-	const m = new DbModel ({dir, foo: undefined})	
+	const m = new DbModel ({dir})	
 	m.loadModules ()
 
-	expect (() => new DbQuery (0)).toThrow ()
+	expect (() => new DbQuery ()).toThrow ()
 
 	const q = new DbQuery (m)
-
 	expect (() => q.check ()).toThrow ()
 
-	const u = new DbQueryTable ()
-	q.tables.push (u)
-	expect (() => q.check ()).toThrow ()
+	expect (() => new DbQueryTable (0, 'userz')).toThrow ()
+	expect (() => new DbQueryTable (q, 'userz')).toThrow ()
 
-	u.name = 'userz'
-	expect (() => q.check ()).toThrow ()
-
-	m.map.set ('userz', null)
-	expect (() => q.check ()).toThrow ()
-
-	u.name = 'users'
-	
-	const c = new DbQueryColumn ()	
+	const u = new DbQueryTable (q, 'users')	
+	const c = new DbQueryColumn ()
 	u.columns = [c]
 	expect (() => q.check ()).toThrow ()
 
@@ -65,15 +55,8 @@ test ('basic', () => {
 	m.loadModules ()
 
 	const q = new DbQuery (m)
-	expect (() => q.check ()).toThrow ()
+	const u = new DbQueryTable (q, 'users')
 
-	expect (() => q.check ()).toThrow ()
-
-	const u = new DbQueryTable ()
-	q.tables.push (u)
-	expect (() => q.check ()).toThrow ()
-
-	u.name = 'users'
 	q.check ()
 
 	expect (u.getColumn ('id_role').expr).toBe ('"users"."id_role"')
@@ -87,32 +70,12 @@ test ('ord', () => {
 	m.loadModules ()
 
 	const q = new DbQuery (m)
-	expect (() => q.check ()).toThrow ()
+	const u = new DbQueryTable (q, 'users', {alias: 'userz'})
 
-	const c = new DbQueryColumn ()	
-	c.expr = 'NOW()'
-	c.alias = 'ts'
+	expect (() => u.getColumn ('guid')).toThrow ()
+	u.getColumn ('label').ord = 1
 
-
-	const u = new DbQueryTable ()
-	u.alias = 'userz'
-	expect (() => u.getColumn ('id_role')).toThrow ()	
-	
-	u.columns = [
-		m.map.get ('users').columns.label.toQueryColumn (),
-		c,
-	]
-	u.columns [0].ord = 1
-	delete u.columns [0].alias
-	
-	q.tables.push (u)
-	expect (() => q.check ()).toThrow ()
-
-	u.name = 'users'
 	q.check ()
-
-	expect (() => u.getColumn ('id_role')).toThrow ()
-	expect (u.getColumn ('ts').qName).toBe ('"ts"')
 
 	expect (q.order [0].expr).toBe ('"userz"."label"')
 	expect (q.order [0].desc).toBe (false)
