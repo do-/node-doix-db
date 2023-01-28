@@ -18,27 +18,7 @@ test ('bad', () => {
 	expect (() => new DbQuery ()).toThrow ()
 
 	const q = new DbQuery (m)
-
 	expect (() => new DbQueryTable (0, 'userz')).toThrow ()
-	expect (() => new DbQueryTable (q, 'userz')).toThrow ()
-
-	const u = new DbQueryTable (q, 'users')	
-	const c = new DbQueryColumn (q, 'NOW()', 'ts')
-	u.columns = [c]
-
-	c.desc = 0
-	expect (() => q.check ()).toThrow ()
-
-	c.ord = -1
-	expect (() => q.check ()).toThrow ()
-
-	c.ord = 2
-	expect (() => q.check ()).toThrow ()
-
-	c.ord = 1
-	u.columns.push (c)
-
-	expect (() => q.check ()).toThrow ()
 
 })
 
@@ -49,9 +29,10 @@ test ('basic', () => {
 	m.loadModules ()
 
 	const q = new DbQuery (m)
-	const u = new DbQueryTable (q, 'users')
 
-	q.check ()
+	const dual = new DbQueryTable (q, 'DUAL')
+
+	const u = new DbQueryTable (q, 'users')
 
 	expect (q.columns.get ('id_role').expr).toBe ('"users"."id_role"')
 						
@@ -66,9 +47,7 @@ test ('ord', () => {
 	const q = new DbQuery (m)
 	const u = new DbQueryTable (q, 'users', {alias: 'userz', columns: ['label']})
 
-	q.columns.get ('label').ord = 1
-
-	q.check ()
+	q.orderBy ('label')
 
 	expect (q.order [0].expr).toBe ('"userz"."label"')
 	expect (q.order [0].desc).toBe (false)
