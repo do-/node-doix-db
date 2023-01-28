@@ -29,10 +29,8 @@ test ('basic', () => {
 	m.loadModules ()
 
 	const q = new DbQuery (m)
-
 	const dual = new DbQueryTable (q, 'DUAL')
-
-	const u = new DbQueryTable (q, 'users')
+	const u = q.addTable ('users')
 
 	expect (q.columns.get ('id_role').expr).toBe ('"users"."id_role"')
 						
@@ -45,7 +43,7 @@ test ('ord', () => {
 	m.loadModules ()
 
 	const q = new DbQuery (m)
-	const u = new DbQueryTable (q, 'users', {alias: 'userz', columns: ['label']})
+	const u = q.addTable ('users', {alias: 'userz', columns: ['label']})
 
 	q.orderBy ('label')
 
