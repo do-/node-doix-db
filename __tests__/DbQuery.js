@@ -117,6 +117,7 @@ test ('ord', () => {
 	q.check ()
 
 	expect (() => u.getColumn ('id_role')).toThrow ()
+	expect (u.getColumn ('ts').qName).toBe ('"ts"')
 
 	expect (q.order [0].expr).toBe ('"userz"."label"')
 	expect (q.order [0].desc).toBe (false)
