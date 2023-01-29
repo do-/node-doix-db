@@ -92,11 +92,13 @@ test ('not in model', () => {
 
 	const q = m.createQuery ([
 		['users'],
-		['DUAL'],
+		['DUAL', {join: 'INNER'}],
 		['DUAL', {as: '2'}],
 		['DUAL', {as: '3', on: '2.dummy = 3.dummy'}],
 		['roles'],
 	])
+	
+	q.toQueryCount ()
 
 })
 
@@ -115,7 +117,31 @@ test ('basic', () => {
 	])
 
 	expect (q.toParamsSql ()).toStrictEqual (['SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."id_role" AS "id_role","r"."label" AS "r.label" FROM "users" AS "users" LEFT JOIN "roles" AS "r" ON "r"."id"="users"."id_role"'])
-						
+
+	expect (q.toQueryCount ().toParamsSql ()).toStrictEqual (['SELECT COUNT(*) AS "cnt" FROM "users" AS "users"'])
+
+})
+
+
+test ('inner join', () => {
+
+	jest.resetModules ()
+	const m = new DbModel ({dir, foo: undefined})	
+	m.loadModules ()
+
+	const q = m.createQuery ([
+		['users'],
+		['roles', {
+			as: 'r', 
+			join: 'INNER',
+			columns: ['label']
+		}],
+	])
+
+	expect (q.toParamsSql ()).toStrictEqual (['SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."id_role" AS "id_role","r"."label" AS "r.label" FROM "users" AS "users" INNER JOIN "roles" AS "r" ON "r"."id"="users"."id_role"'])
+
+	expect (q.toQueryCount ().toParamsSql ()).toStrictEqual (['SELECT COUNT(*) AS "cnt" FROM "users" AS "users" INNER JOIN "roles" AS "r" ON "r"."id"="users"."id_role"'])
+
 })
 
 test ('join by ref', () => {
