@@ -81,6 +81,34 @@ test ('bad', () => {
 		])
 	}).toThrow ()
 
+	expect (() => {
+		m.createQuery ([
+			['users', {
+				as: 'u1',
+				filters: [
+					['label', 'DISLIKE', '%'],
+				]
+			}],
+		])
+	}).toThrow ()
+
+	expect (() => {
+		m.createQuery ([
+			['users', {
+				as: 'u1',
+				filters: [
+					['uuid', 'IS NULL'],				
+					['id_role', '=', 0],
+					['id_role', '>', 0],
+					['id_role', '<', 0],
+					['id_role', '<=', 0],
+					['id_role', '>=', 0],
+					['id_role', '<>', 0],
+					['id_role', 'IN', 0],
+				]
+			}],
+		])
+	}).toThrow ()
 
 })
 
@@ -109,14 +137,24 @@ test ('basic', () => {
 	m.loadModules ()
 
 	const q = m.createQuery ([
-		['users'],
+		['users', {
+			filters: [
+				['uuid', '=', null],
+				['label', 'LIKE', '%'],
+				['id_role', 'IN', [1, 2]],
+				['id_role', 'BETWEEN', [1, 2]],
+			]
+		}],
 		['roles', {
 			as: 'r', 
-			columns: ['label']
+			columns: ['label'],
+			filters: [
+				['label', 'IS NOT NULL'],
+			]
 		}],
 	])
 
-	expect (q.toParamsSql ()).toStrictEqual (['SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."id_role" AS "id_role","r"."label" AS "r.label" FROM "users" AS "users" LEFT JOIN "roles" AS "r" ON "r"."id"="users"."id_role"'])
+	expect (q.toParamsSql ()).toStrictEqual (['%', 1, 2, 1, 2, 'SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."id_role" AS "id_role","r"."label" AS "r.label" FROM "users" AS "users" LEFT JOIN "roles" AS "r" ON "r"."id"="users"."id_role" AND "r"."label" IS NOT NULL WHERE "users"."label" LIKE ? AND "users"."id_role" IN (?,?) AND "users"."id_role" BETWEEN ? AND ?'])
 
 	expect (q.toQueryCount ().toParamsSql ()).toStrictEqual (['SELECT COUNT(*) AS "cnt" FROM "users" AS "users"'])
 
@@ -196,5 +234,24 @@ test ('ord', () => {
 	q.orderBy ('label')
 
 	expect (q.toParamsSql ()).toStrictEqual (['SELECT "userz"."id_role" AS "id_role","userz"."label" AS "label" FROM "users" AS "userz" ORDER BY "userz"."id_role" DESC,"userz"."label"'])
+
+})
+
+test ('empty sets', () => {
+
+	jest.resetModules ()
+	const m = new DbModel ({dir, foo: undefined})	
+	m.loadModules ()
+
+	const q = m.createQuery ([
+		['users', {
+			filters: [
+				['label', 'IN', []],
+				['id_role', 'NOT IN', []],
+			]
+		}],
+	])
+
+	expect (q.toParamsSql ()).toStrictEqual (['SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."id_role" AS "id_role" FROM "users" AS "users" WHERE 0=1 AND 0=0'])
 
 })
