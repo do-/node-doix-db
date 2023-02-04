@@ -156,10 +156,40 @@ test ('basic', () => {
 
 	expect (q.toParamsSql ()).toStrictEqual (['%', 1, 2, 1, 2, 'SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."id_role" AS "id_role","r"."label" AS "r.label" FROM "users" AS "users" LEFT JOIN "roles" AS "r" ON "r"."id"="users"."id_role" AND "r"."label" IS NOT NULL WHERE "users"."label" LIKE ? AND "users"."id_role" IN (?,?) AND "users"."id_role" BETWEEN ? AND ?'])
 
-	expect (q.toQueryCount ().toParamsSql ()).toStrictEqual (['SELECT COUNT(*) AS "cnt" FROM "users" AS "users"'])
+	expect (q.toQueryCount ().toParamsSql ()).toStrictEqual (['%', 1, 2, 1, 2, 'SELECT COUNT(*) AS "cnt" FROM "users" AS "users" WHERE "users"."label" LIKE ? AND "users"."id_role" IN (?,?) AND "users"."id_role" BETWEEN ? AND ?'])
 
 })
 
+
+test ('basic', () => {
+
+	jest.resetModules ()
+	const m = new DbModel ({dir, foo: undefined})	
+	m.loadModules ()
+
+	const q = m.createQuery ([
+		['users', {
+			filters: [
+				['uuid', '=', null],
+				['label', 'ILIKE', '%'],
+				['id_role', 'IN', [1, 2]],
+				['id_role', 'BETWEEN', [1, 2]],
+			]
+		}],
+		['roles', {
+			as: 'r', 
+			columns: ['label'],
+			filters: [
+				['label', 'NOT ILIKE', '%'],
+			]
+		}],
+	])
+
+	expect (q.toParamsSql ()).toStrictEqual (['%', '%', 1, 2, 1, 2, 'SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."id_role" AS "id_role","r"."label" AS "r.label" FROM "users" AS "users" LEFT JOIN "roles" AS "r" ON "r"."id"="users"."id_role" AND UPPER("r"."label") NOT LIKE UPPER(?) WHERE UPPER("users"."label") LIKE UPPER(?) AND "users"."id_role" IN (?,?) AND "users"."id_role" BETWEEN ? AND ?'])
+
+	expect (q.toQueryCount ().toParamsSql ()).toStrictEqual (['%', 1, 2, 1, 2, 'SELECT COUNT(*) AS "cnt" FROM "users" AS "users" WHERE UPPER("users"."label") LIKE UPPER(?) AND "users"."id_role" IN (?,?) AND "users"."id_role" BETWEEN ? AND ?'])
+
+})
 
 test ('inner join', () => {
 
