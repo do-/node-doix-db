@@ -16,7 +16,7 @@ test ('basic', () => {
 		{sql: 'id IS NULL'},
 	])
 	
-	expect (or.sql).toBe ('id = ? OR id > ? OR id IS NULL')
+	expect (or.sql).toBe ('((id = ?) OR (id > ?) OR (id IS NULL))')
 
 	expect (or.params).toStrictEqual ([-1, 10])
 
