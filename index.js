@@ -13,5 +13,6 @@ module.exports = {
 	DbModel:        require ('./lib/model/DbModel.js'),
 	DbQuery:        require ('./lib/query/DbQuery.js'),
 	DbQueryTable:   require ('./lib/query/DbQueryTable.js'),
-	DbQueryColumn:  require ('./lib/query/DbQueryColumn.js'),
+	DbQueryColumn:  require ('./lib/query/DbQueryColumn.js'),	
+	DbQueryOr:      require ('./lib/query/DbQueryOr.js'),
 }
