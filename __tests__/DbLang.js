@@ -1,4 +1,13 @@
-const {DbLang, DbTable, DbView} = require ('..')
+const {DbLang, DbTable, DbView, DbModel} = require ('..')
+const Path = require ('path')
+const {randomUUID} = require ('crypto')
+
+const r = () => ['root1'].map (i => Path.join (__dirname, 'data', i))
+
+const dir = {
+	root: r (),
+	live: false,
+}
 
 const lang = new DbLang ()
 
@@ -26,5 +35,27 @@ test ('getDbObjectName', () => {
 
 	expect (lang.getDbObjectName ({schemaName: null,    localName: 'roles'})).toBe ('"roles"')
 	expect (lang.getDbObjectName ({schemaName: 'their', localName: 'roles'})).toBe ('"their"."roles"')
+
+})
+
+test ('genUpdateParamsSql', () => {
+
+	jest.resetModules ()
+
+	const m = new DbModel ({dir})
+	
+	m.loadModules ()
+	
+	const uuid = randomUUID ()
+	const label = 'Default Admin'
+
+	expect (() => lang.genUpdateParamsSql   ('users', {uuid})).toThrow ()
+	expect (() => m.lang.genUpdateParamsSql ('uzerz', {uuid})).toThrow ()
+	expect (() => m.lang.genUpdateParamsSql ('users', {})).toThrow ()
+
+	expect (m.lang.genUpdateParamsSql ('users', {uuid, null: null})).toBeNull ()
+	expect (m.lang.genUpdateParamsSql ('users', {uuid, label: {}.label})).toBeNull ()
+	expect (m.lang.genUpdateParamsSql ('users', {uuid, label})).toStrictEqual ( [label, uuid, 'UPDATE "users" SET "label"=? WHERE "uuid"=?'])
+	expect (m.lang.genUpdateParamsSql ('users', {uuid, label, id_role: null})).toStrictEqual ( [label, uuid, 'UPDATE "users" SET "label"=?,"id_role"=DEFAULT WHERE "uuid"=?'])
 
 })
