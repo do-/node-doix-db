@@ -59,3 +59,23 @@ test ('genUpdateParamsSql', () => {
 	expect (m.lang.genUpdateParamsSql ('users', {uuid, label, id_role: null})).toStrictEqual ( [label, uuid, 'UPDATE "users" SET "label"=?,"id_role"=DEFAULT WHERE "uuid"=?'])
 
 })
+
+test ('genInsertParamsSql', () => {
+
+	jest.resetModules ()
+
+	const m = new DbModel ({dir})
+	
+	m.loadModules ()
+	
+	const uuid = randomUUID ()
+	const label = 'Default Admin'
+
+	expect (() => lang.genInsertParamsSql   ('users', {uuid})).toThrow ()
+	expect (() => m.lang.genInsertParamsSql ('uzerz', {uuid})).toThrow ()
+
+	expect (m.lang.genInsertParamsSql ('users', {label, uuid})).toStrictEqual ( [label, uuid, 'INSERT INTO "users" ("label","uuid") VALUES (?,?)'])
+	expect (m.lang.genInsertParamsSql ('users', {label: {}.label, uuid})).toStrictEqual ( [uuid, 'INSERT INTO "users" ("uuid") VALUES (?)'])
+	expect (m.lang.genInsertParamsSql ('users', {uuid: undefined, 1: 1})).toStrictEqual ( ['INSERT INTO "users" DEFAULT VALUES'])
+
+})
