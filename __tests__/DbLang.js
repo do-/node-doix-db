@@ -37,6 +37,19 @@ test ('quoteStringLiteral', () => {
 
 })
 
+test ('quoteLiteral', () => {
+
+	expect (lang.quoteLiteral ("'You don't'")).toBe ("'''You don''t'''")
+	expect (lang.quoteLiteral (123)).toBe ('123')
+	expect (lang.quoteLiteral (123n)).toBe ('123')
+	expect (lang.quoteLiteral (0===0)).toBe ('TRUE')
+	expect (lang.quoteLiteral (0===1)).toBe ('FALSE')
+	expect (lang.quoteLiteral (null)).toBe ('NULL')
+	expect (lang.quoteLiteral ({}.id)).toBe ('NULL')
+	expect (() => lang.quoteLiteral ({})).toThrow ()
+
+})
+
 test ('getDbObjectName', () => {
 
 	expect (lang.getDbObjectName ({schemaName: null,    localName: 'roles'})).toBe ('"roles"')
