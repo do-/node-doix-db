@@ -31,6 +31,12 @@ test ('quoteName', () => {
 
 })
 
+test ('quoteStringLiteral', () => {
+
+	expect (lang.quoteStringLiteral ("'You don't'")).toBe ("'''You don''t'''")
+
+})
+
 test ('getDbObjectName', () => {
 
 	expect (lang.getDbObjectName ({schemaName: null,    localName: 'roles'})).toBe ('"roles"')
