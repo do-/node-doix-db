@@ -98,3 +98,22 @@ test ('genInsertParamsSql', () => {
 	expect (m.lang.genInsertParamsSql ('users', {uuid: undefined, 1: 1})).toStrictEqual ( ['INSERT INTO "users" DEFAULT VALUES'])
 
 })
+
+test ('genSelectObjectParamsSql', () => {
+
+	jest.resetModules ()
+
+	const m = new DbModel ({dir})
+
+	m.loadModules ()
+
+	const uuid = randomUUID ()
+
+	expect (() => lang.genSelectObjectParamsSql ('SELECT ?', 1)).toThrow ()
+
+	expect (m.lang.genSelectObjectParamsSql ('SELECT ?', 1)).toStrictEqual ( [1, 'SELECT ?'])
+	expect (m.lang.genSelectObjectParamsSql ('users_roles', [uuid, 1])).toStrictEqual ( [uuid, 1, 'SELECT * FROM "users_roles" WHERE "id_user"=? AND "id_role"=?'])
+
+})
+
+
