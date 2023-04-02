@@ -25,7 +25,7 @@ test ('basic', () => {
 	
 	m.loadModules ()
 	
-	expect ([...m.map.keys ()].sort ()).toStrictEqual (['roles', 'users'])
+	expect ([...m.map.keys ()].sort ()).toStrictEqual (['roles', 'users', 'users_roles'])
 	
 	const roles = m.map.get ('roles')
 	
@@ -133,6 +133,7 @@ test ('broken ref: no col', () => {
 				
 })
 
+
 test ('broken ref: no col', () => {
 
 	jest.resetModules ()
@@ -158,8 +159,6 @@ test ('ref: custom col', () => {
 	m.removeAllListeners (DbModel.EV_OBJECTS_CREATED)
 	
 	m.loadModules ()
-	
-	m.map.get ('roles').pk [0] = 'uuid'
 
 	m.map.get ('users').columns.id_role.reference.targetColumnName = 'id'
 	

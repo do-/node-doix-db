@@ -54,8 +54,8 @@ test ('model', async () => {
 	expect (roles.qName).toBe ('"roles"')
 	expect (roles.columns.id.qName).toBe ('"id"')
 
-	expect ([...model.allInstancesOf (DbRelation)]).toHaveLength (2)
-	expect ([...model.allInstancesOf (DbTable)]).toHaveLength (2)
+	expect ([...model.allInstancesOf (DbRelation)]).toHaveLength (3)
+	expect ([...model.allInstancesOf (DbTable)]).toHaveLength (3)
 	expect ([...model.allInstancesOf (DbView)]).toStrictEqual ([])
 
 })
