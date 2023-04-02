@@ -109,8 +109,7 @@ test ('genSelectObjectParamsSql', () => {
 
 	const uuid = randomUUID ()
 
-	expect (() => lang.genSelectObjectParamsSql ('SELECT ?', 1)).toThrow ()
-
+	expect (lang.genSelectObjectParamsSql ('SELECT ?', 1)).toStrictEqual ( [1, 'SELECT ?'])
 	expect (m.lang.genSelectObjectParamsSql ('SELECT ?', 1)).toStrictEqual ( [1, 'SELECT ?'])
 	expect (m.lang.genSelectObjectParamsSql ('users_roles', [uuid, 1])).toStrictEqual ( [uuid, 1, 'SELECT * FROM "users_roles" WHERE "id_user"=? AND "id_role"=?'])
 
