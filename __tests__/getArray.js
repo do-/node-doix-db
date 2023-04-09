@@ -45,6 +45,12 @@ test ('getArray query', async () => {
 		{id: 1, name: 'admin', label: 'System Administrator'},
 		{id: 2, name: 'user',  label: 'Regular User'},
 	])
+
+	expect (a [Symbol.for ('columns')]).toStrictEqual ([
+		{name: 'id'}, 
+		{name: 'name'}, 
+		{name: 'label'} 
+	])
 	
 })
 

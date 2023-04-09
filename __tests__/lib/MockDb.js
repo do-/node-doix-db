@@ -1,9 +1,22 @@
+const {Readable} = require ('stream')
 const {DbClient, DbLang} = require ('../..')
 
 const RS = [
 	{id: 1, name: 'admin', label: 'System Administrator'},
 	{id: 2, name: 'user',  label: 'Regular User'},
 ]
+
+const COLS = Object.keys (RS [0]).map (name => ({name}))
+
+const r = a => {
+
+	const s = Readable.from (a)
+	
+	s [Symbol.for ('columns')] = COLS
+	
+	return s
+
+}
 
 module.exports = class extends DbClient {
 
@@ -15,15 +28,13 @@ module.exports = class extends DbClient {
 	
 	}
 
-	async getArrayBySql (sql, params = [], options = {}) {
-	
-		if (!sql) return []
+	async getStream (sql, params = [], options = {}) {
 
-		if (sql.indexOf ('COUNT') > -1) return [RS.length]
+		if (!sql) return r ([])
 
-		if (options.maxRows === 1) return [RS [0]]
+		if (sql.indexOf ('COUNT') > -1) return r ([RS.length])
 
-		return [...RS]
+		return r (RS)
 
 	}
 
