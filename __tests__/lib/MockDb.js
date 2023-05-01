@@ -31,6 +31,8 @@ module.exports = class extends DbClient {
 	async getStream (sql, params = [], options = {}) {
 
 		if (!sql) return r ([])
+		
+		if (sql === 'SELECT NULL') return r ([Symbol.for ('NULL')])
 
 		if (sql.indexOf ('COUNT') > -1) return r ([RS.length])
 

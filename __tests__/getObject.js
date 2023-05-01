@@ -6,6 +6,8 @@ test ('getObject', async () => {
 	
 	expect (await db.getObject ('')).toStrictEqual ({})
 
+	expect (await db.getScalar ('SELECT NULL')).toBeNull ()
+
 	const DEF = {1: 0}
 
 	expect (await db.getObject ('', [], {notFound: DEF})).toBe (DEF)
