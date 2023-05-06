@@ -12,6 +12,7 @@ module.exports = {
 	DbObjectMap:    require ('./lib/model/DbObjectMap.js'),
 	DbObject:       require ('./lib/model/DbObject.js'),
 	DbModel:        require ('./lib/model/DbModel.js'),
+	DbMigrationPlan:require ('./lib/migration/DbMigrationPlan.js'),
 	DbQuery:        require ('./lib/query/DbQuery.js'),
 	DbQueryTable:   require ('./lib/query/DbQueryTable.js'),
 	DbQueryColumn:  require ('./lib/query/DbQueryColumn.js'),	

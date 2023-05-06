@@ -1,5 +1,13 @@
+const Path = require ('path')
 const {Readable} = require ('stream')
-const {DbClient, DbLang} = require ('../..')
+const {DbClient, DbLang, DbModel} = require ('../..')
+
+const root = () => ['root1'].map (i => Path.join (__dirname, '..', 'data', i))
+
+const dir = {
+	root: root (),
+	live: false,
+}
 
 const RS = [
 	{id: 1, name: 'admin', label: 'System Administrator'},
@@ -22,9 +30,15 @@ module.exports = class extends DbClient {
 
 	constructor () {
 	
+		jest.resetModules ()
+
 		super ()
 		
 		this.lang = new DbLang ()
+
+		this.model = new DbModel ({dir})
+
+		this.model.loadModules ()
 	
 	}
 
