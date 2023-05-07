@@ -1,6 +1,6 @@
 const Path = require ('path')
 const {Readable} = require ('stream')
-const {DbClient, DbLang, DbModel} = require ('../..')
+const {DbClient, DbLang, DbModel, DbTable} = require ('../..')
 
 const root = () => ['root1'].map (i => Path.join (__dirname, '..', 'data', i))
 
@@ -52,6 +52,18 @@ module.exports = class extends DbClient {
 
 		return r (RS)
 
+	}
+	
+	async getStreamOfExistingTables () {
+	
+		return Readable.from ([
+
+			new DbTable ({name: 'users', columns: {id: 'int'}, pk: ['id']}),
+			
+			new DbTable ({name: '__alien', columns: {id: 'int'}, pk: ['id']}),
+
+		])
+	
 	}
 
 }
