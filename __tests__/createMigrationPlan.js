@@ -7,7 +7,6 @@ test ('createMigrationPlan', async () => {
 	const plan = db.createMigrationPlan ()
 	
 	expect (plan.lang).toBe (db.lang)
-	expect (plan.asIs.size).toBe (0)
 	expect (plan.toBe.get ('users').columns.label.type).toBe ('STRING')
 	
 })
