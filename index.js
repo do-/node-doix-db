@@ -1,4 +1,5 @@
 module.exports = {
+
 	DbEventLogger : require ('./lib/DbEventLogger.js'),
 	DbClient:       require ('./lib/DbClient.js'), 
 	DbPool:         require ('./lib/DbPool.js'), 
@@ -12,9 +13,18 @@ module.exports = {
 	DbObjectMap:    require ('./lib/model/DbObjectMap.js'),
 	DbObject:       require ('./lib/model/DbObject.js'),
 	DbModel:        require ('./lib/model/DbModel.js'),
+
+	DbType:                require ('./lib/model/types/DbType.js'),
+	DbTypeArithmetic:      require ('./lib/model/types/DbTypeArithmetic.js'),
+	DbTypeArithmeticFixed: require ('./lib/model/types/DbTypeArithmeticFixed.js'),
+	DbTypeArithmeticFloat: require ('./lib/model/types/DbTypeArithmeticFloat.js'),
+	DbTypeArithmeticInt:   require ('./lib/model/types/DbTypeArithmeticInt.js'),
+	DbTypeCharacter:       require ('./lib/model/types/DbTypeCharacter.js'),
+
 	DbMigrationPlan:require ('./lib/migration/DbMigrationPlan.js'),
 	DbQuery:        require ('./lib/query/DbQuery.js'),
 	DbQueryTable:   require ('./lib/query/DbQueryTable.js'),
 	DbQueryColumn:  require ('./lib/query/DbQueryColumn.js'),	
 	DbQueryOr:      require ('./lib/query/DbQueryOr.js'),
+
 }

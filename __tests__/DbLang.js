@@ -1,4 +1,11 @@
-const {DbLang, DbTable, DbView, DbModel} = require ('..')
+const {DbLang, DbTable, DbView, DbModel
+	, DbType 
+	, DbTypeArithmetic 
+	, DbTypeArithmeticFixed 
+	, DbTypeArithmeticFloat 
+	, DbTypeArithmeticInt 
+	, DbTypeCharacter 
+} = require ('..')
 const Path = require ('path')
 const {randomUUID} = require ('crypto')
 
@@ -115,4 +122,17 @@ test ('genSelectObjectParamsSql', () => {
 
 })
 
+
+test ('getTypeDefinition', () => {
+
+	expect (lang.getTypeDefinition ('bool').name).toBe ('BOOL')
+	expect (lang.getTypeDefinition ('int')).toBeInstanceOf (DbTypeArithmeticInt)
+	expect (lang.getTypeDefinition ('integer')).toBeInstanceOf (DbTypeArithmeticInt)
+	expect (lang.getTypeDefinition ('reAl')).toBeInstanceOf (DbTypeArithmeticFloat)
+	expect (lang.getTypeDefinition ('Decimal')).toBeInstanceOf (DbTypeArithmeticFixed)
+	expect (lang.getTypeDefinition ('numeric')).toBeInstanceOf (DbTypeArithmeticFixed)
+	expect (lang.getTypeDefinition ('CHAR')).toBeInstanceOf (DbTypeCharacter)
+	expect (lang.getTypeDefinition ('varchar')).toBeInstanceOf (DbTypeCharacter)
+
+})
 
