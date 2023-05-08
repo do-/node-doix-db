@@ -168,4 +168,16 @@ test ('typeDim', () => {
 		expect (col.typeDim).toBe ('DECIMAL(10,2)')
 	}
 
+	{
+		const col = new DbColumn ({name: 'amount', type: 'char', size: 10, scale: undefined})
+		col.setLang (lang)	
+		expect (col.typeDim).toBe ('CHAR(10)')
+	}
+
+	{
+		const col = new DbColumn ({name: 'amount', type: 'bool', size: undefined, scale: undefined})
+		col.setLang (lang)	
+		expect (col.typeDim).toBe ('BOOL')
+	}
+
 })
