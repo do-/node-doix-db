@@ -58,7 +58,7 @@ module.exports = class extends DbClient {
 	
 		return Readable.from ([
 
-			new DbTable ({name: 'users', columns: {uuid: 'uuid'}, pk: ['uuid']}),
+			new DbTable ({name: 'users', columns: {uuid: 'uuid', label: 'text'}, pk: ['uuid']}),
 			
 			new DbTable ({name: '__alien', columns: {id: 'int'}, pk: ['id']}),
 

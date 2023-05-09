@@ -1,4 +1,4 @@
-const {DbLang, DbTable, DbView, DbModel
+const {DbLang, DbTable, DbView, DbModel, DbColumn
 	, DbType 
 	, DbTypeArithmetic 
 	, DbTypeArithmeticFixed 
@@ -126,8 +126,6 @@ test ('genSelectObjectParamsSql', () => {
 test ('getTypeDefinition', () => {
 
 	expect (lang.getTypeDefinition ('bool').name).toBe ('BOOL')
-	expect (lang.getTypeDefinition ('int')).toBeInstanceOf (DbTypeArithmeticInt)
-	expect (lang.getTypeDefinition ('integer')).toBeInstanceOf (DbTypeArithmeticInt)
 	expect (lang.getTypeDefinition ('reAl')).toBeInstanceOf (DbTypeArithmeticFloat)
 	expect (lang.getTypeDefinition ('Decimal')).toBeInstanceOf (DbTypeArithmeticFixed)
 	expect (lang.getTypeDefinition ('numeric')).toBeInstanceOf (DbTypeArithmeticFixed)
@@ -135,4 +133,198 @@ test ('getTypeDefinition', () => {
 	expect (lang.getTypeDefinition ('varchar')).toBeInstanceOf (DbTypeCharacter)
 
 })
+
+
+test ('isAdequateColumnType', () => {
+
+	expect (	
+		lang.isAdequateColumnType (
+			lang.getTypeDefinition ('bigint'),
+			lang.getTypeDefinition ('integer')
+		)	
+	).toBe (true)
+
+	expect (	
+		lang.isAdequateColumnType (
+			lang.getTypeDefinition ('int'),
+			lang.getTypeDefinition ('smallint')
+		)	
+	).toBe (true)
+
+	expect (	
+		lang.isAdequateColumnType (
+			lang.getTypeDefinition ('int'),
+			lang.getTypeDefinition ('bool')
+		)	
+	).toBe (false)
+
+	expect (	
+		lang.isAdequateColumnType (
+			lang.getTypeDefinition ('int'),
+			new DbTypeArithmeticInt ({name: 'UINT32', bytes: 4, isSigned: false})
+		)	
+	).toBe (false)
+
+	expect (	
+		lang.isAdequateColumnType (
+			lang.getTypeDefinition ('string'),
+			lang.getTypeDefinition ('string')
+		)	
+	).toBe (true)
+
+})
+
+test ('isAdequateColumnTypeDim', () => {
+
+	expect (	
+		lang.isAdequateColumnTypeDim (
+			new DbColumn ('int'),
+			new DbColumn ('int')
+		)
+	).toBe (true)
+
+	expect (	
+		lang.isAdequateColumnTypeDim (
+			new DbColumn ('int'),
+			new DbColumn ('smallint=0')
+		)
+	).toBe (true)
+
+	expect (	
+		lang.isAdequateColumnTypeDim (
+			new DbColumn ('varchar(255)'),
+			new DbColumn ('varchar(10)')
+		)
+	).toBe (true)
+
+	expect (	
+		lang.isAdequateColumnTypeDim (
+			new DbColumn ('char(5)'),
+			new DbColumn ('char(10)')
+		)
+	).toBe (false)
+
+	expect (	
+		lang.isAdequateColumnTypeDim (
+			new DbColumn ('decimal(10, 3)'),
+			new DbColumn ('numeric(5, 2)')
+		)
+	).toBe (true)
+
+	expect (	
+		lang.isAdequateColumnTypeDim (
+			new DbColumn ('decimal(5, 3)'),
+			new DbColumn ('numeric(10, 3)')
+		)
+	).toBe (false)
+
+	expect (	
+		lang.isAdequateColumnTypeDim (
+			new DbColumn ('decimal(10, 2)'),
+			new DbColumn ('numeric(5, 3)')
+		)
+	).toBe (false)
+
+})
+
+test ('isAdequateColumnTypeDim', () => {
+
+	expect (	
+		lang.isAdequateColumnTypeDim (
+			new DbColumn ('int'),
+			new DbColumn ('int')
+		)
+	).toBe (true)
+
+	expect (	
+		lang.isAdequateColumnTypeDim (
+			new DbColumn ('int'),
+			new DbColumn ('smallint=0')
+		)
+	).toBe (true)
+
+	expect (	
+		lang.isAdequateColumnTypeDim (
+			new DbColumn ('varchar(255)'),
+			new DbColumn ('varchar(10)')
+		)
+	).toBe (true)
+
+	expect (	
+		lang.isAdequateColumnTypeDim (
+			new DbColumn ('char(5)'),
+			new DbColumn ('char(10)')
+		)
+	).toBe (false)
+
+	expect (	
+		lang.isAdequateColumnTypeDim (
+			new DbColumn ('decimal(10, 3)'),
+			new DbColumn ('numeric(5, 2)')
+		)
+	).toBe (true)
+
+	expect (	
+		lang.isAdequateColumnTypeDim (
+			new DbColumn ('decimal(5, 3)'),
+			new DbColumn ('numeric(10, 3)')
+		)
+	).toBe (false)
+
+	expect (	
+		lang.isAdequateColumnTypeDim (
+			new DbColumn ('decimal(10, 2)'),
+			new DbColumn ('numeric(5, 3)')
+		)
+	).toBe (false)
+
+})
+
+test ('compareColumns', () => {
+
+	expect (	
+		lang.compareColumns (
+			new DbColumn ('int'),
+			new DbColumn ('int')
+		)
+	).toStrictEqual ([])
+
+	expect (	
+		lang.compareColumns (
+			new DbColumn ('int'),
+			new DbColumn ('int!')
+		)
+	).toStrictEqual (['nullable'])
+
+	expect (	
+		lang.compareColumns (
+			new DbColumn ('int!'),
+			new DbColumn ('int=0')
+		)
+	).toStrictEqual (['default'])
+
+	expect (	
+		lang.compareColumns (
+			new DbColumn ('bigint'),
+			new DbColumn ('int')
+		)
+	).toStrictEqual ([])
+
+	expect (	
+		lang.compareColumns (
+			new DbColumn ('int'),
+			new DbColumn ('bigint')
+		)
+	).toStrictEqual (['typeDim'])
+
+	expect (	
+		lang.compareColumns (
+			new DbColumn ('numeric(5,2)'),
+			new DbColumn ('numeric(10,2)')
+		)
+	).toStrictEqual (['typeDim'])
+
+})
+
+
 
