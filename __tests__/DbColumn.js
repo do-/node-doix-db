@@ -165,7 +165,7 @@ test ('typeDim', () => {
 	{
 		const col = new DbColumn ({name: 'amount', type: 'decimal', size: 10, scale: 2})
 		col.setLang (lang)	
-		expect (col.typeDim).toBe ('DECIMAL(10,2)')
+		expect (col.typeDim).toBe ('NUMERIC(10,2)')
 	}
 
 	{
