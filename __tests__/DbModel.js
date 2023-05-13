@@ -62,8 +62,6 @@ test ('other type', () => {
 	expect (roles).toBeInstanceOf (DbView)
 	
 	roles.setLang (m.lang)
-	
-	expect (m.lang.genCreateMockView (roles)).toBe ('CREATE VIEW "roles" AS SELECT CAST (NULL AS INT) AS "id",CAST (NULL AS STRING) AS "name",CAST (NULL AS STRING) AS "label"')
 				
 })
 

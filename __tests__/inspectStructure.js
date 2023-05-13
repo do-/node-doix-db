@@ -56,4 +56,9 @@ test ('main', async () => {
 	expect (toDo.get ('recreate').map (i => i.name)).toStrictEqual (['v'])
 	expect (plan.asIs.get ('users').toDo.get ('add-column').map (i => i.name).sort ()).toStrictEqual (['id_role'])
 
+	expect ([...plan.genDDL ()]).toStrictEqual ([])
+	const SQL = Symbol ()
+	plan.lang.genDDL = function * () {yield SQL}
+	expect ([...plan.genDDL ()]).toStrictEqual ([SQL])
+
 })
