@@ -280,6 +280,22 @@ test ('isAdequateColumnTypeDim', () => {
 
 })
 
+test ('genColumnDefault', () => {
+
+	expect (	
+		lang.genColumnDefault (
+			new DbColumn ('int=1')
+		)
+	).toBe ("'1'")
+
+	expect (	
+		lang.genColumnDefault (
+			{default: 'NULL'}
+		)
+	).toBe ("NULL")
+
+})
+
 test ('compareColumns', () => {
 
 	expect (	
