@@ -296,6 +296,24 @@ test ('genColumnDefault', () => {
 
 })
 
+test ('genColumn', () => {
+	
+	const column = new DbColumn ('int=1')
+	column.name = 'id'
+	column.setLang (lang)
+
+	expect (lang.genColumn (column)).toBe (`"id" INT DEFAULT '1' NOT NULL`)
+
+	column.nullable = true
+
+	expect (lang.genColumn (column)).toBe (`"id" INT DEFAULT '1'`)
+
+	delete column.default
+
+	expect (lang.genColumn (column)).toBe (`"id" INT`)
+
+})
+
 test ('compareColumns', () => {
 
 	expect (	
