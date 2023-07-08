@@ -25,7 +25,7 @@ test ('basic', () => {
 	
 	m.loadModules ()
 	
-	expect ([...m.map.keys ()].sort ()).toStrictEqual (['roles', 'users', 'users_roles'])
+	expect ([...m.map.keys ()].sort ()).toStrictEqual (['roles', 'users', 'users_roles', 'vw_roles'])
 	
 	const roles = m.map.get ('roles')
 	
@@ -60,6 +60,9 @@ test ('other type', () => {
 	const roles = m.map.get ('roles')
 
 	expect (roles).toBeInstanceOf (DbView)
+
+	expect (roles.options).toBe ('')
+	expect (roles.specification).toBe ('')
 	
 	roles.setLang (m.lang)
 				
