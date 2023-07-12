@@ -40,6 +40,7 @@ test ('basic', () => {
 
 	expect (users.columns.id_role.reference.targetRelation).toBe (roles)
 	expect (users.columns.id_role.reference.targetColumn).toBe (roles.columns.id)
+	expect (users.triggers.map (i => i.name)).toStrictEqual (['users__trg_0', 'trg_user_cleanup'])
 				
 })
 

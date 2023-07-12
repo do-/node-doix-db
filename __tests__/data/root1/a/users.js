@@ -9,5 +9,20 @@ module.exports = {
     },
     
     pk: 'uuid',
+    
+    triggers: [
+
+	   	{
+			phase  : 'BEFORE INSERT OR UPDATE',
+			action : 'FOR EACH ROW',
+			sql    : `NULL;`,
+    	},
+	   	{
+	   		name   : 'trg_user_cleanup',
+			phase  : 'AFTER DELETE',
+			sql    : `NULL;`,
+    	},
+
+    ],    
 
 }

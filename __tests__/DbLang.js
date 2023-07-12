@@ -360,5 +360,19 @@ test ('compareColumns', () => {
 
 })
 
+test ('getTriggerName', () => {
 
+	expect (	
+		lang.getTriggerName (
+			{name: 'my_table', triggers: [{}]}, 0
+		)
+	).toBe ('my_table__trg_0')
+
+	expect (	
+		lang.getTriggerName (
+			{name: 'my_table', triggers: new Array (100)}, 7
+		)
+	).toBe ('my_table__trg_07')
+
+})
 
