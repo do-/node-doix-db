@@ -25,7 +25,7 @@ test ('basic', () => {
 	
 	m.loadModules ()
 	
-	expect ([...m.map.keys ()].sort ()).toStrictEqual (['do_it', 'roles', 'users', 'users_roles', 'vw_roles'])
+	expect ([...m.map.keys ()].sort ()).toStrictEqual (['do_it', 'get_time', 'roles', 'users', 'users_roles', 'vw_roles'])
 	
 	const roles = m.map.get ('roles')
 	

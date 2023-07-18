@@ -53,7 +53,7 @@ test ('main', async () => {
 	expect (toDo.size).toBe (2)
 	
 	expect (toDo.get ('create').map (i => i.name).sort ()).toStrictEqual (['roles', 'users_roles'])
-	expect (toDo.get ('recreate').map (i => i.name).sort ()).toStrictEqual (['do_it', 'v', 'vw_roles'])
+	expect (toDo.get ('recreate').map (i => i.name).sort ()).toStrictEqual (['do_it', 'get_time', 'v', 'vw_roles'])
 	expect (plan.asIs.get ('users').toDo.get ('add-column').map (i => i.name).sort ()).toStrictEqual (['id_role'])
 
 	expect ([...plan.genDDL ()]).toStrictEqual ([])

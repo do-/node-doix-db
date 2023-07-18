@@ -13,6 +13,7 @@ module.exports = {
 	DbObjectMap:    require ('./lib/model/DbObjectMap.js'),
 	DbObject:       require ('./lib/model/DbObject.js'),
 	DbProcedure:    require ('./lib/model/DbProcedure.js'),
+	DbFunction:     require ('./lib/model/DbFunction.js'),
 	DbModel:        require ('./lib/model/DbModel.js'),
 
 	DbType:                require ('./lib/model/types/DbType.js'),
