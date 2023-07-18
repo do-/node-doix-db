@@ -1,4 +1,4 @@
-const {DbModel, DbLang, DbObjectMap, DbObjectMerger, DbTable, DbView} = require ('..')
+const {DbModel, DbLang, DbObjectMap, DbObjectMerger, DbTable, DbView, DbProcedure} = require ('..')
 const Path = require ('path')
 
 const r = () => ['root1'].map (i => Path.join (__dirname, 'data', i))
@@ -25,7 +25,7 @@ test ('basic', () => {
 	
 	m.loadModules ()
 	
-	expect ([...m.map.keys ()].sort ()).toStrictEqual (['roles', 'users', 'users_roles', 'vw_roles'])
+	expect ([...m.map.keys ()].sort ()).toStrictEqual (['do_it', 'roles', 'users', 'users_roles', 'vw_roles'])
 	
 	const roles = m.map.get ('roles')
 	
@@ -49,7 +49,7 @@ test ('other type', () => {
 	jest.resetModules ()
 
 	class DD extends DbLang {
-		getDbObjectClass () {return DbView}
+		getDbObjectClass (o) {return o.body ? DbProcedure : DbView}
 	}
 
 	const m = new DbModel ({dir, foo: undefined})

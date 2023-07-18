@@ -12,6 +12,7 @@ module.exports = {
 	DbView:         require ('./lib/model/DbView.js'),
 	DbObjectMap:    require ('./lib/model/DbObjectMap.js'),
 	DbObject:       require ('./lib/model/DbObject.js'),
+	DbProcedure:    require ('./lib/model/DbProcedure.js'),
 	DbModel:        require ('./lib/model/DbModel.js'),
 
 	DbType:                require ('./lib/model/types/DbType.js'),
