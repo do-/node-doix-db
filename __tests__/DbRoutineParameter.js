@@ -8,6 +8,8 @@ test ('Object', () => {
 
 	expect (new DbRoutineParameter ({name: 'id', type: 'int'})).toEqual ({name: 'id', type: 'int', mode: 'IN'})
 	expect (new DbRoutineParameter ({name: 'id', type: 'int', mode: 'OUT'})).toEqual ({name: 'id', type: 'int', mode: 'OUT'})
+	expect (new DbRoutineParameter ('id      int      =         0')).toEqual ({name: 'id', type: 'int', mode: 'IN', default: '0'})
+	expect (new DbRoutineParameter ('id int=0')).toEqual ({name: 'id', type: 'int', mode: 'IN', default: '0'})
 
 })
 
