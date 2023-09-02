@@ -13,5 +13,15 @@ module.exports = {
     data: [
         {id: 1, name: 'admin', label: 'System Administrator'},
     ],
+    
+    keys: {
+    	label: 'label',
+    	label_a: ['label'],
+    	u: {
+	    	localName: 'r_u',
+	    	options: ['UNIQUE'],
+	    	parts:   ['label'],
+    	},
+    },
 
 }

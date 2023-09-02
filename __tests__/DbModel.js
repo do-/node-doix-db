@@ -36,6 +36,9 @@ test ('basic', () => {
         {id: 2, name: 'user',  label: 'Regular User'},
     ])
 
+	expect (roles.keys.label.qName).toBe ('"roles_label"')
+	expect (roles.keys.u.qName).toBe ('"r_u"')
+
 	const users = m.map.get ('users')
 
 	expect (users.columns.id_role.reference.targetRelation).toBe (roles)
