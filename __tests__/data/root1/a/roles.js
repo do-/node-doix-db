@@ -15,6 +15,7 @@ module.exports = {
     ],
     
     keys: {
+    	botched: null,
     	label: 'label',
     	label_a: ['label'],
     	u: {
