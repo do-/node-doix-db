@@ -1,6 +1,6 @@
 module.exports = {
 
-    label: "Users' roles",
+    comment: "Users' roles",
 
     columns: {
         id_user  : '(users) // User',

@@ -50,8 +50,9 @@ test ('main', async () => {
 	
 	const {toDo} = plan
 
-	expect (toDo.size).toBe (2)
-	
+	expect ([...toDo.keys ()].sort ()).toStrictEqual (['comment', 'create', 'recreate'])
+
+	expect (toDo.get ('comment').map (i => i.name).sort ()).toStrictEqual (['roles', 'users', 'users_roles'])
 	expect (toDo.get ('create').map (i => i.name).sort ()).toStrictEqual (['roles', 'users_roles'])
 	expect (toDo.get ('recreate').map (i => i.name).sort ()).toStrictEqual (['do_it', 'get_time', 'v', 'vw_roles'])
 	expect (plan.asIs.get ('users').toDo.get ('add-column').map (i => i.name).sort ()).toStrictEqual (['id_role'])

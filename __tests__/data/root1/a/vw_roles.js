@@ -1,6 +1,6 @@
 module.exports = {
 
-    label: 'Roles',
+    comment: 'Roles',
 
     columns: {
         id       : 'int    // PK',

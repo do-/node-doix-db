@@ -77,8 +77,6 @@ test ('extension 1', () => {
 	jest.resetModules ()
 
 	const m = new DbModel ({dir})
-	
-	m.map.merger.on ('complete', o => {o.comment = o.label; delete o.label})
 
 	m.loadModules ()
 	
@@ -94,8 +92,6 @@ test ('extension 2', () => {
 
 	const merger = new DbObjectMerger ()
 	
-	merger.on ('complete', o => {o.comment = o.label; delete o.label})
-
 	const m = new DbModel ({dir, merger})
 
 	m.loadModules ()

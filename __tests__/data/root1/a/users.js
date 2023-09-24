@@ -1,6 +1,6 @@
 module.exports = {
 
-    label: 'Users',
+    comment: 'Users',
 
     columns: {
         uuid     : 'uuid    // PK',
