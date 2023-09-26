@@ -58,7 +58,15 @@ module.exports = class extends DbClient {
 	
 		return Readable.from ([
 
-			new DbTable ({name: 'users', columns: {uuid: {type: 'uuid', comment: 'PK'}, label: 'text'}, pk: ['uuid']}),
+			new DbTable ({
+				name: 'users', 
+				columns: {
+					uuid: {type: 'uuid', comment: 'PK'}, 
+					label: {type: 'text', comment: 'Human Readable Label'}, 
+					is_actual: {type: 'boolean', comment: 'Is actual ?'}, 
+				}, 
+				pk: ['uuid']
+			}),
 			
 			new DbTable ({name: '__alien', columns: {id: 'int'}, pk: ['id']}),
 

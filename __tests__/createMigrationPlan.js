@@ -8,7 +8,7 @@ test ('createMigrationPlan', async () => {
 	
 	expect (plan.lang).toBe (db.lang)
 	expect (plan.toBe.get ('users').columns.label.type).toBe ('STRING')
-	
+
 })
 
 

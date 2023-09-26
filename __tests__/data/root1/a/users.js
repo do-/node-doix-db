@@ -4,7 +4,8 @@ module.exports = {
 
     columns: {
         uuid     : 'uuid    // PK',
-        label    : 'string  // Human Readable Label',
+        label    : 'string!  // Human Readable Label',
+        is_actual: 'boolean!  // Is actual',
         id_role  : '(roles)=2 // Role',
     },
     

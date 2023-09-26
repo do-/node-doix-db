@@ -154,7 +154,7 @@ test ('basic', () => {
 		}],
 	], {order: ['label', ['r.label', true]]})
 
-	expect (q.toParamsSql ()).toStrictEqual (['%', 1, 2, 1, 2, 'SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."id_role" AS "id_role","r"."label" AS "r.label" FROM "users" AS "users" LEFT JOIN "roles" AS "r" ON "r"."id"="users"."id_role" AND "r"."label" IS NOT NULL WHERE "users"."label" LIKE ? AND "users"."id_role" IN (?,?) AND "users"."id_role" BETWEEN ? AND ? ORDER BY "users"."label","r"."label" DESC'])
+	expect (q.toParamsSql ()).toStrictEqual (['%', 1, 2, 1, 2, 'SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."is_actual" AS "is_actual","users"."id_role" AS "id_role","r"."label" AS "r.label" FROM "users" AS "users" LEFT JOIN "roles" AS "r" ON "r"."id"="users"."id_role" AND "r"."label" IS NOT NULL WHERE "users"."label" LIKE ? AND "users"."id_role" IN (?,?) AND "users"."id_role" BETWEEN ? AND ? ORDER BY "users"."label","r"."label" DESC'])
 
 	expect (q.toQueryCount ().toParamsSql ()).toStrictEqual (['%', 1, 2, 1, 2, 'SELECT COUNT(*) AS "cnt" FROM "users" AS "users" WHERE "users"."label" LIKE ? AND "users"."id_role" IN (?,?) AND "users"."id_role" BETWEEN ? AND ?'])
 
@@ -185,7 +185,7 @@ test ('ilike', () => {
 		}],
 	])
 
-	expect (q.toParamsSql ()).toStrictEqual (['%', '%', 1, 2, 1, 2, 'SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."id_role" AS "id_role","r"."label" AS "r.label" FROM "users" AS "users" LEFT JOIN "roles" AS "r" ON "r"."id"="users"."id_role" AND UPPER("r"."label") NOT LIKE UPPER(?) WHERE UPPER("users"."label") LIKE UPPER(?) AND "users"."id_role" IN (?,?) AND "users"."id_role" BETWEEN ? AND ?'])
+	expect (q.toParamsSql ()).toStrictEqual (['%', '%', 1, 2, 1, 2, 'SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."is_actual" AS "is_actual","users"."id_role" AS "id_role","r"."label" AS "r.label" FROM "users" AS "users" LEFT JOIN "roles" AS "r" ON "r"."id"="users"."id_role" AND UPPER("r"."label") NOT LIKE UPPER(?) WHERE UPPER("users"."label") LIKE UPPER(?) AND "users"."id_role" IN (?,?) AND "users"."id_role" BETWEEN ? AND ?'])
 
 	expect (q.toQueryCount ().toParamsSql ()).toStrictEqual (['%', 1, 2, 1, 2, 'SELECT COUNT(*) AS "cnt" FROM "users" AS "users" WHERE UPPER("users"."label") LIKE UPPER(?) AND "users"."id_role" IN (?,?) AND "users"."id_role" BETWEEN ? AND ?'])
 
@@ -206,7 +206,7 @@ test ('inner join', () => {
 		}],
 	])
 
-	expect (q.toParamsSql ()).toStrictEqual (['SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."id_role" AS "id_role","r"."label" AS "r.label" FROM "users" AS "users" INNER JOIN "roles" AS "r" ON "r"."id"="users"."id_role"'])
+	expect (q.toParamsSql ()).toStrictEqual (['SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."is_actual" AS "is_actual","users"."id_role" AS "id_role","r"."label" AS "r.label" FROM "users" AS "users" INNER JOIN "roles" AS "r" ON "r"."id"="users"."id_role"'])
 
 	expect (q.toQueryCount ().toParamsSql ()).toStrictEqual (['SELECT COUNT(*) AS "cnt" FROM "users" AS "users" INNER JOIN "roles" AS "r" ON "r"."id"="users"."id_role"'])
 
@@ -227,7 +227,7 @@ test ('join by ref', () => {
 		}],
 	])
 
-	expect (q.toParamsSql ()).toStrictEqual (['SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."id_role" AS "id_role","r"."label" AS "r.label" FROM "users" AS "users" LEFT JOIN "roles" AS "r" ON "r"."id"="users"."id_role"'])
+	expect (q.toParamsSql ()).toStrictEqual (['SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."is_actual" AS "is_actual","users"."id_role" AS "id_role","r"."label" AS "r.label" FROM "users" AS "users" LEFT JOIN "roles" AS "r" ON "r"."id"="users"."id_role"'])
 						
 })
 
@@ -246,7 +246,7 @@ test ('explicit join', () => {
 		}],
 	])
 
-	expect (q.toParamsSql ()).toStrictEqual (['SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."id_role" AS "id_role","r"."label" AS "r.label" FROM "users" AS "users" LEFT JOIN "roles" AS "r" ON users.id_role = r.id'])
+	expect (q.toParamsSql ()).toStrictEqual (['SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."is_actual" AS "is_actual","users"."id_role" AS "id_role","r"."label" AS "r.label" FROM "users" AS "users" LEFT JOIN "roles" AS "r" ON users.id_role = r.id'])
 						
 })
 
@@ -282,6 +282,6 @@ test ('empty sets', () => {
 		}],
 	])
 
-	expect (q.toParamsSql ()).toStrictEqual (['SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."id_role" AS "id_role" FROM "users" AS "users" WHERE 0=1 AND 0=0'])
+	expect (q.toParamsSql ()).toStrictEqual (['SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."is_actual" AS "is_actual","users"."id_role" AS "id_role" FROM "users" AS "users" WHERE 0=1 AND 0=0'])
 
 })
