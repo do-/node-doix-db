@@ -1,4 +1,4 @@
-const {DbObject} = require ('..')
+const {DbObject, DbModel} = require ('..')
 
 test ('bad', () => {
 
@@ -19,7 +19,15 @@ test ('names local', () => {
 
 test ('names foreign', () => {
 
-	const o = new DbObject ({name: 'their.roles'})
+	const m = new DbModel ({})
+
+	m.addSchema ('t', 'their')
+
+	const s = m.schemata.get ('t')
+
+	s.add ('roles', {body: 'SELECT 1'})
+
+	const o = s.map.get ('roles')
 	
 	expect (o.schemaName).toBe ('their')
 	expect (o.localName).toBe ('roles')
