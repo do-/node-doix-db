@@ -54,8 +54,18 @@ test ('model', async () => {
 	expect (roles.qName).toBe ('"roles"')
 	expect (roles.columns.id.qName).toBe ('"id"')
 
-	expect ([...model.allInstancesOf (DbRelation)]).toHaveLength (4)
-	expect ([...model.allInstancesOf (DbTable)]).toHaveLength (3)
-	expect ([...model.allInstancesOf (DbView)]).toHaveLength (1)
+	const cnt = clazz => {
+
+		let n = 0
+
+		for (const i of model.map.values ()) if (i instanceof clazz) n ++
+
+		return n
+
+	}
+
+	expect (cnt (DbRelation)).toBe (4)
+	expect (cnt (DbTable)).toBe (3)
+	expect (cnt (DbView)).toBe (1)
 
 })
