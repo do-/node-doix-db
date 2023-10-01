@@ -19,11 +19,9 @@ test ('names local', () => {
 
 test ('names foreign', () => {
 
-	const m = new DbModel ({})
+	const m = new DbModel ({schemata: [['t', 'their'], [null, 'public'], 'log']})
 
-	m.addSchema ('t', 'their')
-
-	const s = m.schemata.get ('t')
+	const s = m.getSchema ('t')
 
 	s.add ('roles', {body: 'SELECT 1'})
 
