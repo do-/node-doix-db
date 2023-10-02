@@ -1,5 +1,11 @@
 const {DbSchema, DbLang, DbTable} = require ('..')
 
+test ('bad', () => {
+
+	expect (() => new DbSchema ({one: 1})).toThrow ()
+
+})
+
 test ('basic', () => {
 
 	const lang = new DbLang (), model = {lang}
