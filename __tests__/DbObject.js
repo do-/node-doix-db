@@ -35,4 +35,8 @@ test ('names foreign', () => {
 	expect (o.schemaName).toBe ('their')
 	expect (o.localName).toBe ('roles')
 
+	expect (m.find ('t.roles')).toBe (o)
+	expect (m.find ('tt.roles')).toBeUndefined ()
+	expect (m.find ('t.rules')).toBeUndefined ()
+
 })
