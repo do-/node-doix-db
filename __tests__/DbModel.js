@@ -99,6 +99,22 @@ test ('extension 2', () => {
 				
 })
 
+test ('broken ref: no schema', () => {
+
+	jest.resetModules ()
+
+	const m = new DbModel ({src, foo: undefined})
+	
+	m.removeAllListeners (DbModel.EV_OBJECTS_CREATED)
+	
+	m.loadModules ()
+	
+	m.map.get ('users').columns.id_role.reference.targetSchemaName = 'rulez'
+	
+	expect (() => m.resolveReferences ()).toThrow ()
+				
+})
+
 test ('broken ref: no table', () => {
 
 	jest.resetModules ()
