@@ -3,7 +3,7 @@ const {DbSchemaSource} = require ('..')
 test ('bad', () => {
 
 	expect (() => new DbSchemaSource ({})).toThrow ()
-	expect (() => new DbSchemaSource ({dir: 1, root: 2})).toThrow ()
+	expect (() => new DbSchemaSource ({dir: 1, one: 1})).toThrow ()
 
 })
 

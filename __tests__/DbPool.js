@@ -3,12 +3,7 @@ const {DbPool, DbLang, DbModel, DbEventLogger, DbRelation, DbTable, DbView} = re
 const Path = require ('path')
 const EventEmitter = require ('events')
 
-const r = () => ['root1'].map (i => Path.join (__dirname, 'data', i))
-
-const dir = {
-	root: r (),
-	live: false,
-}
+const src = Path.join (__dirname, 'data', 'root1')
 
 test ('pojo', () => {
 
@@ -28,7 +23,7 @@ test ('model', async () => {
 	
 	pool.lang = new DbLang ()
 
-	const model = new DbModel ({dir, db: pool})
+	const model = new DbModel ({src, db: pool})
 
 	model.loadModules ()
 

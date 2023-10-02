@@ -2,12 +2,7 @@ const Path = require ('path')
 const {Readable} = require ('stream')
 const {DbClient, DbLang, DbModel, DbTable} = require ('../..')
 
-const root = () => ['root1'].map (i => Path.join (__dirname, '..', 'data', i))
-
-const dir = {
-	root: root (),
-	live: false,
-}
+const src = Path.join (__dirname, '..', 'data', 'root1')
 
 const RS = [
 	{id: 1, name: 'admin', label: 'System Administrator'},
@@ -36,7 +31,7 @@ module.exports = class extends DbClient {
 		
 		this.lang = new DbLang ()
 
-		this.model = new DbModel ({dir})
+		this.model = new DbModel ({src})
 
 		this.model.loadModules ()
 	

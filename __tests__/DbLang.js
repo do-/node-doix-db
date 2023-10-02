@@ -1,6 +1,4 @@
 const {DbLang, DbTable, DbView, DbModel, DbColumn
-	, DbType 
-	, DbTypeArithmetic 
 	, DbTypeArithmeticFixed 
 	, DbTypeArithmeticFloat 
 	, DbTypeArithmeticInt 
@@ -9,12 +7,7 @@ const {DbLang, DbTable, DbView, DbModel, DbColumn
 const Path = require ('path')
 const {randomUUID} = require ('crypto')
 
-const r = () => ['root1'].map (i => Path.join (__dirname, 'data', i))
-
-const dir = {
-	root: r (),
-	live: false,
-}
+const src = Path.join (__dirname, 'data', 'root1')
 
 const lang = new DbLang ()
 
@@ -68,7 +61,7 @@ test ('genUpdateParamsSql', () => {
 
 	jest.resetModules ()
 
-	const m = new DbModel ({dir})
+	const m = new DbModel ({src})
 	
 	m.loadModules ()
 	
@@ -90,7 +83,7 @@ test ('genInsertParamsSql', () => {
 
 	jest.resetModules ()
 
-	const m = new DbModel ({dir})
+	const m = new DbModel ({src})
 	
 	m.loadModules ()
 	
@@ -110,7 +103,7 @@ test ('genSelectObjectParamsSql', () => {
 
 	jest.resetModules ()
 
-	const m = new DbModel ({dir})
+	const m = new DbModel ({src})
 
 	m.loadModules ()
 

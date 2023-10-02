@@ -1,18 +1,13 @@
-const {DbModel, DbQuery, DbQueryTable, DbQueryColumn} = require ('..')
+const {DbModel, DbQuery, DbQueryTable} = require ('..')
 
 const Path = require ('path')
 
-const r = () => ['root1'].map (i => Path.join (__dirname, 'data', i))
-
-const dir = {
-	root: r (),
-	live: false,
-}
+const src = Path.join (__dirname, 'data', 'root1')
 
 test ('bad', () => {
 
 	jest.resetModules ()
-	const m = new DbModel ({dir})	
+	const m = new DbModel ({src})	
 	m.loadModules ()
 
 	expect (() => new DbQuery ()).toThrow ()
@@ -115,7 +110,7 @@ test ('bad', () => {
 test ('not in model', () => {
 
 	jest.resetModules ()
-	const m = new DbModel ({dir, foo: undefined})	
+	const m = new DbModel ({src, foo: undefined})	
 	m.loadModules ()
 
 	const q = m.createQuery ([
@@ -133,7 +128,7 @@ test ('not in model', () => {
 test ('basic', () => {
 
 	jest.resetModules ()
-	const m = new DbModel ({dir, foo: undefined})	
+	const m = new DbModel ({src, foo: undefined})	
 	m.loadModules ()
 
 	const q = m.createQuery ([
@@ -164,7 +159,7 @@ test ('basic', () => {
 test ('ilike', () => {
 
 	jest.resetModules ()
-	const m = new DbModel ({dir, foo: undefined})	
+	const m = new DbModel ({src, foo: undefined})	
 	m.loadModules ()
 
 	const q = m.createQuery ([
@@ -194,7 +189,7 @@ test ('ilike', () => {
 test ('inner join', () => {
 
 	jest.resetModules ()
-	const m = new DbModel ({dir, foo: undefined})	
+	const m = new DbModel ({src, foo: undefined})	
 	m.loadModules ()
 
 	const q = m.createQuery ([
@@ -215,7 +210,7 @@ test ('inner join', () => {
 test ('join by ref', () => {
 
 	jest.resetModules ()
-	const m = new DbModel ({dir, foo: undefined})	
+	const m = new DbModel ({src, foo: undefined})	
 	m.loadModules ()
 
 	const q = m.createQuery ([
@@ -234,7 +229,7 @@ test ('join by ref', () => {
 test ('explicit join', () => {
 
 	jest.resetModules ()
-	const m = new DbModel ({dir, foo: undefined})	
+	const m = new DbModel ({src, foo: undefined})	
 	m.loadModules ()
 
 	const q = m.createQuery ([
@@ -254,7 +249,7 @@ test ('explicit join', () => {
 test ('ord', () => {
 
 	jest.resetModules ()
-	const m = new DbModel ({dir, foo: undefined})	
+	const m = new DbModel ({src, foo: undefined})	
 	m.loadModules ()
 
 	const q = m.createQuery ()
@@ -270,7 +265,7 @@ test ('ord', () => {
 test ('empty sets', () => {
 
 	jest.resetModules ()
-	const m = new DbModel ({dir, foo: undefined})	
+	const m = new DbModel ({src, foo: undefined})	
 	m.loadModules ()
 
 	const q = m.createQuery ([

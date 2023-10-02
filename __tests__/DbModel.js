@@ -1,19 +1,16 @@
 const {DbModel, DbLang, DbSchemaSource, DbObjectMerger, DbTable, DbView, DbProcedure} = require ('..')
 const Path = require ('path')
 
-const r = () => ['root1'].map (i => Path.join (__dirname, 'data', i))
-
-const dir = {
-	root: r (),
-	live: false,
-}
+const src = Path.join (__dirname, 'data', 'root1')
 
 test ('bad', () => {
 
-	expect (() => new DbModel ({dir, db: 0})).toThrow ()
-	expect (() => new DbModel ({dir, zzzzz: 0})).toThrow ()
-	expect (() => new DbSchemaSource ({dir, z: undefined, zzzzz: 0})).toThrow ()
-	expect (() => new DbSchemaSource ({dir, merger: 0})).toThrow ()
+	expect (() => new DbModel ({src, db: 0})).toThrow ()
+	expect (() => new DbModel ({src, zzzzz: 0})).toThrow ()
+	expect (() => new DbSchemaSource ({root: src, z: undefined, zzzzz: 0})).toThrow ()
+	expect (() => new DbSchemaSource ({root: src, merger: 0})).toThrow ()
+	expect (() => new DbModel ({src: [{name: null}, {name: null}]})).toThrow ()
+	expect (() => new DbModel ({src: [{name: null, schemaName: 'public'}, {name: 'public'}]})).toThrow ()
 
 })
 
@@ -21,7 +18,7 @@ test ('basic', () => {
 
 	jest.resetModules ()
 
-	const m = new DbModel ({dir, foo: undefined})
+	const m = new DbModel ({src})
 	
 	m.loadModules ()
 	
@@ -55,7 +52,7 @@ test ('other type', () => {
 		getDbObjectClass (o) {return o.body ? DbProcedure : DbView}
 	}
 
-	const m = new DbModel ({dir, foo: undefined})
+	const m = new DbModel ({src, foo: undefined})
 	
 	m.lang = new DD ()
 
@@ -76,7 +73,7 @@ test ('extension 1', () => {
 
 	jest.resetModules ()
 
-	const m = new DbModel ({dir})
+	const m = new DbModel ({src})
 
 	m.loadModules ()
 	
@@ -92,7 +89,7 @@ test ('extension 2', () => {
 
 	const merger = new DbObjectMerger ()
 	
-	const m = new DbModel ({dir, merger})
+	const m = new DbModel ({src: {root: src, merger}})
 
 	m.loadModules ()
 
@@ -106,7 +103,7 @@ test ('broken ref: no table', () => {
 
 	jest.resetModules ()
 
-	const m = new DbModel ({dir, foo: undefined})
+	const m = new DbModel ({src, foo: undefined})
 	
 	m.removeAllListeners (DbModel.EV_OBJECTS_CREATED)
 	
@@ -122,7 +119,7 @@ test ('broken ref: no col', () => {
 
 	jest.resetModules ()
 
-	const m = new DbModel ({dir, foo: undefined})
+	const m = new DbModel ({src, foo: undefined})
 	
 	m.removeAllListeners (DbModel.EV_OBJECTS_CREATED)
 	
@@ -134,12 +131,11 @@ test ('broken ref: no col', () => {
 				
 })
 
-
 test ('broken ref: no col', () => {
 
 	jest.resetModules ()
 
-	const m = new DbModel ({dir, foo: undefined})
+	const m = new DbModel ({src, foo: undefined})
 	
 	m.removeAllListeners (DbModel.EV_OBJECTS_CREATED)
 	
@@ -155,7 +151,7 @@ test ('ref: custom col', () => {
 
 	jest.resetModules ()
 
-	const m = new DbModel ({dir, foo: undefined})
+	const m = new DbModel ({src, foo: undefined})
 	
 	m.removeAllListeners (DbModel.EV_OBJECTS_CREATED)
 	

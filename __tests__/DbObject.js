@@ -19,7 +19,11 @@ test ('names local', () => {
 
 test ('names foreign', () => {
 
-	const m = new DbModel ({schemata: [['t', 'their'], [null, 'public'], 'log']})
+	const m = new DbModel ({src: [
+		{schemaName: 'public'},
+		{name: 't', schemaName: 'their'},
+	]})
+
 	m.loadModules ()
 
 	const s = m.getSchema ('t')

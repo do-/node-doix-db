@@ -2,12 +2,7 @@ const {DbModel} = require ('..')
 const MockDb = require ('./lib/MockDb.js')
 const Path = require ('path')
 
-const r = () => ['root1'].map (i => Path.join (__dirname, 'data', i))
-
-const dir = {
-	root: r (),
-	live: false,
-}
+const src = Path.join (__dirname, 'data', 'root1')
 
 test ('getArray sql', async () => {
 		
@@ -26,7 +21,7 @@ test ('getArray query', async () => {
 
 	jest.resetModules ()
 
-	const m = new DbModel ({dir, foo: undefined})
+	const m = new DbModel ({src, foo: undefined})
 
 	m.loadModules ()
 
@@ -58,7 +53,7 @@ test ('getArray query cnt', async () => {
 		
 	jest.resetModules ()
 
-	const m = new DbModel ({dir, foo: undefined})
+	const m = new DbModel ({src, foo: undefined})
 	
 	m.loadModules ()
 	
