@@ -127,7 +127,9 @@ const tst_ref = (src, dst) => {
 
 test ('reference', () => {
 
-	tst_ref ('(users)', {type: undefined, nullable: true, reference: {targetRelationName: 'users', on: {}}})
+	tst_ref ('(users)', {type: undefined, nullable: true, reference: {targetRelationName: 'users', targetSchemaName: undefined, on: {}}})
+	tst_ref ('(.users)', {type: undefined, nullable: true, reference: {targetRelationName: 'users', targetSchemaName: null, on: {}}})
+	tst_ref ('(log.users)', {type: undefined, nullable: true, reference: {targetRelationName: 'users', targetSchemaName: 'log', on: {}}})
 	tst_ref ('(users)!', {type: undefined, nullable: false, reference: {targetRelationName: 'users', on: {}}})
 	tst_ref ('(-users)', {type: undefined, nullable: true, reference: {targetRelationName: 'users', on: {DELETE: 'CASCADE'}}})
 	tst_ref ('(~users)', {type: undefined, nullable: true, reference: {targetRelationName: 'users', on: {DELETE: 'SET NULL'}}})
