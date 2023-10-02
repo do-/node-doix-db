@@ -10,7 +10,7 @@ module.exports = {
 	DbRelation:     require ('./lib/model/DbRelation.js'),	
 	DbTable:        require ('./lib/model/DbTable.js'),
 	DbView:         require ('./lib/model/DbView.js'),
-	DbObjectMap:    require ('./lib/model/DbObjectMap.js'),
+	DbSchemaSource: require ('./lib/model/DbSchemaSource.js'),
 	DbObject:       require ('./lib/model/DbObject.js'),
 	DbProcedure:    require ('./lib/model/DbProcedure.js'),
 	DbFunction:     require ('./lib/model/DbFunction.js'),

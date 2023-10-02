@@ -1,4 +1,4 @@
-const {DbModel, DbLang, DbObjectMap, DbObjectMerger, DbTable, DbView, DbProcedure} = require ('..')
+const {DbModel, DbLang, DbSchemaSource, DbObjectMerger, DbTable, DbView, DbProcedure} = require ('..')
 const Path = require ('path')
 
 const r = () => ['root1'].map (i => Path.join (__dirname, 'data', i))
@@ -12,8 +12,8 @@ test ('bad', () => {
 
 	expect (() => new DbModel ({dir, db: 0})).toThrow ()
 	expect (() => new DbModel ({dir, zzzzz: 0})).toThrow ()
-	expect (() => new DbObjectMap ({dir, z: undefined, zzzzz: 0})).toThrow ()
-	expect (() => new DbObjectMap ({dir, merger: 0})).toThrow ()
+	expect (() => new DbSchemaSource ({dir, z: undefined, zzzzz: 0})).toThrow ()
+	expect (() => new DbSchemaSource ({dir, merger: 0})).toThrow ()
 
 })
 
