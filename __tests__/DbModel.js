@@ -22,9 +22,9 @@ test ('basic', () => {
 	
 	m.loadModules ()
 	
-	expect ([...m.map.keys ()].sort ()).toStrictEqual (['do_it', 'get_time', 'roles', 'users', 'users_roles', 'vw_roles'])
+	expect ([...m.defaultSchema.map.keys ()].sort ()).toStrictEqual (['do_it', 'get_time', 'roles', 'users', 'users_roles', 'vw_roles'])
 	
-	const roles = m.map.get ('roles')
+	const roles = m.find ('roles')
 	
 	expect (roles).toBeInstanceOf (DbTable)
 	expect (roles.pk).toStrictEqual (['id'])
@@ -36,7 +36,7 @@ test ('basic', () => {
 	expect (roles.keys.label.qName).toBe ('"roles_label"')
 	expect (roles.keys.u.qName).toBe ('"r_u"')
 
-	const users = m.map.get ('users')
+	const users = m.find ('users')
 
 	expect (users.columns.id_role.reference.targetRelation).toBe (roles)
 	expect (users.columns.id_role.reference.targetColumn).toBe (roles.columns.id)
@@ -58,7 +58,7 @@ test ('other type', () => {
 
 	m.loadModules ()
 
-	const roles = m.map.get ('roles')
+	const roles = m.find ('roles')
 
 	expect (roles).toBeInstanceOf (DbView)
 
@@ -77,7 +77,7 @@ test ('extension 1', () => {
 
 	m.loadModules ()
 	
-	const roles = m.map.get ('roles')
+	const roles = m.find ('roles')
 	
 	expect (roles.comment).toBe ('Roles')
 				
@@ -93,7 +93,7 @@ test ('extension 2', () => {
 
 	m.loadModules ()
 
-	const roles = m.map.get ('roles')
+	const roles = m.find ('roles')
 	
 	expect (roles.comment).toBe ('Roles')
 				
@@ -109,7 +109,7 @@ test ('broken ref: no schema', () => {
 	
 	m.loadModules ()
 	
-	m.map.get ('users').columns.id_role.reference.targetSchemaName = 'rulez'
+	m.find ('users').columns.id_role.reference.targetSchemaName = 'rulez'
 	
 	expect (() => m.resolveReferences ()).toThrow ()
 				
@@ -125,7 +125,7 @@ test ('broken ref: no table', () => {
 	
 	m.loadModules ()
 	
-	m.map.get ('users').columns.id_role.reference.targetRelationName = 'rulez'
+	m.find ('users').columns.id_role.reference.targetRelationName = 'rulez'
 	
 	expect (() => m.resolveReferences ()).toThrow ()
 				
@@ -141,7 +141,7 @@ test ('broken ref: no col', () => {
 	
 	m.loadModules ()
 	
-	m.map.get ('roles').pk.push ('label')
+	m.find ('roles').pk.push ('label')
 	
 	expect (() => m.resolveReferences ()).toThrow ()
 				
@@ -157,7 +157,7 @@ test ('broken ref: no col', () => {
 	
 	m.loadModules ()
 	
-	m.map.get ('roles').pk [0] = 'uuid'
+	m.find ('roles').pk [0] = 'uuid'
 	
 	expect (() => m.resolveReferences ()).toThrow ()
 				
@@ -173,12 +173,12 @@ test ('ref: custom col', () => {
 	
 	m.loadModules ()
 
-	m.map.get ('users').columns.id_role.reference.targetColumnName = 'id'
+	m.find ('users').columns.id_role.reference.targetColumnName = 'id'
 	
 	m.resolveReferences ()
 
-	const roles = m.map.get ('roles')
-	const users = m.map.get ('users')
+	const roles = m.find ('roles')
+	const users = m.find ('users')
 
 	expect (users.columns.id_role.reference.targetRelation).toBe (roles)
 	expect (users.columns.id_role.reference.targetColumn).toBe (roles.columns.id)

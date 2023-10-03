@@ -43,8 +43,7 @@ test ('model', async () => {
 	expect (job.db.model).toBe (model)
 	expect (job.db.lang).toBe (pool.lang)
 	
-	const roles = model.map.get ('roles')
-	const users = model.map.get ('users')
+	const roles = model.find ('roles')
 
 	expect (roles.qName).toBe ('"roles"')
 	expect (roles.columns.id.qName).toBe ('"id"')
@@ -53,7 +52,7 @@ test ('model', async () => {
 
 		let n = 0
 
-		for (const i of model.map.values ()) if (i instanceof clazz) n ++
+		for (const i of model.defaultSchema.map.values ()) if (i instanceof clazz) n ++
 
 		return n
 

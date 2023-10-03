@@ -26,7 +26,7 @@ test ('not bad', () => {
 		]
 	})
 
-	const [t] = m.map.get ('users').triggers
+	const [t] = m.find ('users').triggers
 
 	expect (t.options).toBe ('')
 	expect (t.action).toBe ('')
