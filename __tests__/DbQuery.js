@@ -265,7 +265,12 @@ test ('ord', () => {
 test ('empty sets', () => {
 
 	jest.resetModules ()
-	const m = new DbModel ({src, foo: undefined})	
+	const m = new DbModel ({
+		src: {
+			root: src,
+			schemaName: 'public',
+		}
+	})	
 	m.loadModules ()
 
 	const q = m.createQuery ([
@@ -277,6 +282,6 @@ test ('empty sets', () => {
 		}],
 	])
 
-	expect (q.toParamsSql ()).toStrictEqual (['SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."is_actual" AS "is_actual","users"."id_role" AS "id_role" FROM "users" AS "users" WHERE 0=1 AND 0=0'])
+	expect (q.toParamsSql ()).toStrictEqual (['SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."is_actual" AS "is_actual","users"."id_role" AS "id_role" FROM "public"."users" AS "users" WHERE 0=1 AND 0=0'])
 
 })
