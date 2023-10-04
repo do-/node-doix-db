@@ -14,7 +14,7 @@ test ('createMigrationPlan', async () => {
 	
 	expect (unknown.map (i => i.fullName).sort ()).toStrictEqual (['__alien', 'log.__alien'])
 	expect ([...plan.asIs.keys ()]).toStrictEqual (['users'])
-
+	expect (plan.toBe.has ('log.pro')).toBe (true)
 })
 
 

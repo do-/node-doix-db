@@ -52,10 +52,10 @@ test ('main', async () => {
 
 	expect ([...toDo.keys ()].sort ()).toStrictEqual (['comment', 'create', 'recreate'])
 
-	expect (toDo.get ('comment')).toHaveLength (13)
+	expect (toDo.get ('comment')).toHaveLength (14)
 	expect (toDo.get ('create').map (i => i.name).sort ()).toStrictEqual (['roles', 'users_roles'])
-	expect (toDo.get ('recreate').map (i => i.name).sort ()).toStrictEqual (['do_it', 'get_time', 'v', 'vw_roles'])
-		
+	expect (toDo.get ('recreate').map (i => i.fullName).sort ()).toStrictEqual (['do_it', 'get_time', 'log.pro', 'v', 'vw_roles'])
+
 	expect (plan.asIs.get ('users').toDo.get ('add-column').map (i => i.name).sort ()).toStrictEqual (['id_role'])
 
 	expect ([...plan.genDDL ()]).toStrictEqual ([])
