@@ -12,9 +12,9 @@ test ('createMigrationPlan', async () => {
 	
 	await plan.loadStructure ()
 	
-	expect (unknown.map (i => i.name)).toStrictEqual (['__alien'])
+	expect (unknown.map (i => i.fullName).sort ()).toStrictEqual (['__alien', 'log.__alien'])
 	expect ([...plan.asIs.keys ()]).toStrictEqual (['users'])
-	
+
 })
 
 

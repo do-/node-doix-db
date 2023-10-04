@@ -31,7 +31,10 @@ module.exports = class extends DbClient {
 		
 		this.lang = new DbLang ()
 
-		this.model = new DbModel ({src})
+		this.model = new DbModel ({src: [
+			{root: src},
+			{name: 'log'},
+		]})
 
 		this.model.loadModules ()
 	
@@ -50,10 +53,12 @@ module.exports = class extends DbClient {
 	}
 	
 	async getStreamOfExistingTables () {
-	
-		return Readable.from ([
 
-			new DbTable ({
+		const {model} = this, {defaultSchema} = model
+
+		const tables = [
+
+			{
 				name: 'users', 
 				columns: {
 					uuid: {type: 'uuid', comment: 'PK'}, 
@@ -61,11 +66,17 @@ module.exports = class extends DbClient {
 					is_actual: {type: 'boolean', comment: 'Is actual ?'}, 
 				}, 
 				pk: ['uuid']
-			}),
+			},
 			
-			new DbTable ({name: '__alien', columns: {id: 'int'}, pk: ['id']}),
+			{name: '__alien', columns: {id: 'int'}, pk: ['id']},
 
-		])
+		].map (o => defaultSchema.create (o))
+
+		tables.push (model.getSchema ('log').create (
+			{name: '__alien', columns: {id: 'int'}, pk: ['id']},
+		))
+	
+		return Readable.from (tables)
 	
 	}
 
