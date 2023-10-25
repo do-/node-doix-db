@@ -48,6 +48,8 @@ test ('start 1', () => {
 
 test ('ns', () => {
 
+	expect (DbEventLogger.normalizeSpace ('  ')).toBe ('')
+
 	expect (DbEventLogger.normalizeSpace (`
 
 		SELECT
