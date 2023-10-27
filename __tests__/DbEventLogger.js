@@ -59,22 +59,6 @@ test ('start 1', () => {
 
 })
 
-test ('ns', () => {
-
-	expect (DbEventLogger.normalizeSpace ('  ')).toBe ('')
-
-	expect (DbEventLogger.normalizeSpace (`
-
-		SELECT
-			1
-		FROM 
-			DUAL
-	
-	`)).toBe ('SELECT 1 FROM DUAL')
-
-})
-
-
 test ('sp', () => {
 
 	expect (DbEventLogger.stringifyParams ([])).toBe ('')

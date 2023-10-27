@@ -19,3 +19,28 @@ test ('construct', () => {
 	expect (db.call ('SELECT 1')).toBeInstanceOf (DbCall)
 
 })
+
+test ('normalizeSQL', () => {
+
+	const db = new MockDb ()
+
+	{
+		const c = db.call ('  ')
+		db.lang.normalizeSQL (c)
+		expect (c.sql).toBe ('')
+	}
+
+	{
+		const c = db.call (`
+	
+			SELECT
+				1
+			FROM 
+				DUAL
+		
+		`)
+		db.lang.normalizeSQL (c)
+		expect (c.sql).toBe ('SELECT 1 FROM DUAL')
+	}
+
+})
