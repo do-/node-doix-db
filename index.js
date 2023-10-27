@@ -1,7 +1,7 @@
 module.exports = {
 
 	DbEventLogger : require ('./lib/DbEventLogger.js'),
-	DbClient:       require ('./lib/DbClient.js'), 
+	DbClient:       require ('./lib/DbClient.js'),
 	DbPool:         require ('./lib/DbPool.js'), 
 	DbLang:         require ('./lib/DbLang.js'),
 	DbColumn:       require ('./lib/model/DbColumn.js'),
