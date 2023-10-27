@@ -25,6 +25,19 @@ test ('construct', () => {
 
 })
 
+test ('finish', () => {
+
+	const db = new MockDb (), cl = db.call ('SELECT 1')
+
+	let cnt = 0; cl.on ('finish', () => cnt ++)
+
+	cl.finish ()
+	cl.finish ()
+
+	expect (cnt).toBe (1)
+
+})
+
 test ('normalizeSQL', () => {
 
 	const db = new MockDb ()
