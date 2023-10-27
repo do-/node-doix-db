@@ -1,5 +1,12 @@
+const {Readable, Transform} = require ('stream')
 const DbCall = require ('../lib/DbCall.js')
 const MockDb = require ('./lib/MockDb.js')
+
+const SAMPLE_RECORDS = [
+	{id: 1, label: 'one'},
+	{id: 2, label: 'two'},
+	{id: 3, label: 'three'},
+]
 
 test ('bad', () => {
 
@@ -60,5 +67,51 @@ test ('normalizeSQL', () => {
 		db.lang.normalizeSQL (c)
 		expect (c.sql).toBe ('SELECT 1 FROM DUAL')
 	}
+
+})
+
+test ('fetchArray error', async () => {
+
+	const db = new MockDb (), cl = db.call ('SELECT 1', [], {maxRows: 1000})
+
+	cl.rows = Readable.from (SAMPLE_RECORDS)
+	
+	.pipe (new Transform ({
+		objectMode: true,
+		highWaterMark: 1,
+		transform (r, __, cb) {
+			if (r.id == 1) return cb (null, r)
+			cb (Error ('test'))
+		}		
+	}))
+
+	await expect (cl.fetchArray ()).rejects.toThrow ()
+
+})
+
+test ('fetchArray ok', async () => {
+
+	const db = new MockDb (), cl = db.call ('SELECT 1', [], {maxRows: 1000})
+
+	cl.rows = Readable.from (SAMPLE_RECORDS)
+
+	await cl.fetchArray ()
+
+	expect (cl.rows).toStrictEqual (SAMPLE_RECORDS)
+
+})
+
+test ('fetchArray maxRows', async () => {
+
+	const db = new MockDb (), cl = db.call ('SELECT 1', [], {maxRows: 2})
+
+	cl.rows = Readable.from (SAMPLE_RECORDS)
+
+	await cl.fetchArray ()
+
+	expect (cl.rows).toStrictEqual ([
+		{id: 1, label: 'one'},
+		{id: 2, label: 'two'},
+	])
 
 })
