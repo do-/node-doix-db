@@ -40,7 +40,7 @@
   },
   "homepage": "https://github.com/do-/node-doix-db#readme",
   "peerDependencies": {
-    "doix": "^1.0.3"
+    "doix": "^1.0.5"
   },
   "devDependencies": {
     "jest": "^29.6.1"
