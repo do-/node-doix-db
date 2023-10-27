@@ -9,6 +9,9 @@ test ('bad', () => {
 
 	expect (() => db.call ()).toThrow ('sql')
 	expect (() => db.call (0)).toThrow ('sql')
+	expect (() => db.call ('SELECT 1', [], {maxRows: '1000'})).toThrow ('maxRows')
+	expect (() => db.call ('SELECT 1', [], {maxRows: -1})).toThrow ('maxRows')
+	expect (() => db.call ('SELECT 1', [], {rowMode: 'object'})).toThrow ('rowMode')
 
 })
 
@@ -17,6 +20,8 @@ test ('construct', () => {
 	const db = new MockDb ()
 
 	expect (db.call ('SELECT 1')).toBeInstanceOf (DbCall)
+	expect (db.call ('SELECT 1', [], {maxRows: 1000}).options.rowMode).toBe ('object')
+	expect (db.call ('SELECT 1', [], {maxRows: 1000, rowMode: 'array'}).options.rowMode).toBe ('array')
 
 })
 
