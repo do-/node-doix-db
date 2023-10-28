@@ -86,7 +86,7 @@ test ('normalizeSQL', () => {
 
 })
 
-test ('fetchArray error', async () => {
+test ('fetchStream error', async () => {
 
 	const db = new MockDb (), cl = db.call ('SELECT 1', [], {maxRows: 1000})
 
@@ -101,29 +101,35 @@ test ('fetchArray error', async () => {
 		}		
 	}))
 
-	await expect (cl.fetchArray ()).rejects.toThrow ()
+	cl.observeStream ()
+
+	let cnt = 0; cl.on ('error', () => cnt ++)
+
+	await expect (cl.fetchStream ()).rejects.toThrow ()
+
+	expect (cnt).toBe (1)
 
 })
 
-test ('fetchArray ok', async () => {
+test ('fetchStream ok', async () => {
 
 	const db = new MockDb (), cl = db.call ('SELECT 1', [], {maxRows: 1000})
 
 	cl.rows = Readable.from (SAMPLE_RECORDS)
 
-	await cl.fetchArray ()
+	await cl.fetchStream ()
 
 	expect (cl.rows).toStrictEqual (SAMPLE_RECORDS)
 
 })
 
-test ('fetchArray maxRows', async () => {
+test ('fetchStream maxRows', async () => {
 
 	const db = new MockDb (), cl = db.call ('SELECT 1', [], {maxRows: 2})
 
 	cl.rows = Readable.from (SAMPLE_RECORDS)
 
-	await cl.fetchArray ()
+	await cl.fetchStream ()
 
 	expect (cl.rows).toStrictEqual ([
 		{id: 1, label: 'one'},
@@ -132,25 +138,25 @@ test ('fetchArray maxRows', async () => {
 
 })
 
-test ('fetchArray checkOverflow ok', async () => {
+test ('fetchStream checkOverflow ok', async () => {
 
 	const db = new MockDb (), cl = db.call ('SELECT 1', [], {maxRows: 3, checkOverflow: true})
 
 	cl.rows = Readable.from (SAMPLE_RECORDS)
 
-	await cl.fetchArray ()
+	await cl.fetchStream ()
 
 	expect (cl.rows).toStrictEqual (SAMPLE_RECORDS)
 
 })
 
-test ('fetchArray checkOverflow error', async () => {
+test ('fetchStream checkOverflow error', async () => {
 
 	const db = new MockDb (), cl = db.call ('SELECT 1', [], {maxRows: 2, checkOverflow: true})
 
 	cl.rows = Readable.from (SAMPLE_RECORDS)
 
-	await expect (cl.fetchArray ()).rejects.toThrow ()
+	await expect (cl.fetchStream ()).rejects.toThrow ()
 
 })
 
@@ -162,7 +168,7 @@ test ('flattenStream', async () => {
 
 	cl.flattenStream ()
 
-	await cl.fetchArray ()
+	await cl.fetchStream ()
 
 	expect (cl.rows).toStrictEqual ([1, 2])
 
