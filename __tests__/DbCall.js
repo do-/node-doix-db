@@ -42,6 +42,7 @@ test ('finish', () => {
 
 	let cnt = 0; cl.on ('finish', () => cnt ++)
 
+	cl.processArray ()
 	cl.finish ()
 	cl.finish ()
 
@@ -51,13 +52,16 @@ test ('finish', () => {
 
 test ('flattenArray', () => {
 
-	const db = new MockDb (), cl = db.call ('SELECT 1')
+	const db = new MockDb (), cl = db.call ('SELECT 1', [], {maxRows: 1000, rowMode: 'scalar'})
 
 	cl.rows = [[1], [2], [3]]
 
-	cl.flattenArray ()
+	let cnt = 0; cl.on ('finish', () => cnt ++)
+
+	cl.processArray ()
 
 	expect (cl.rows).toStrictEqual ([1, 2, 3])
+	expect (cnt).toBe (1)
 
 })
 
