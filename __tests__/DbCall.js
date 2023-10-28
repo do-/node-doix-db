@@ -16,9 +16,12 @@ test ('bad', () => {
 
 	expect (() => db.call ()).toThrow ('sql')
 	expect (() => db.call (0)).toThrow ('sql')
+	expect (() => db.call ('SELECT 1', [], {checkOverflow: true})).toThrow ('checkOverflow')
+	expect (() => db.call ('SELECT 1', [], {maxRows: 1000, checkOverflow: 1})).toThrow ('checkOverflow')
 	expect (() => db.call ('SELECT 1', [], {maxRows: '1000'})).toThrow ('maxRows')
 	expect (() => db.call ('SELECT 1', [], {maxRows: -1})).toThrow ('maxRows')
 	expect (() => db.call ('SELECT 1', [], {rowMode: 'object'})).toThrow ('rowMode')
+	expect (() => db.call ('SELECT 1', [], {maxRows: 1000, rowMode: 'map'})).toThrow ('rowMode')
 
 })
 
@@ -29,6 +32,7 @@ test ('construct', () => {
 	expect (db.call ('SELECT 1')).toBeInstanceOf (DbCall)
 	expect (db.call ('SELECT 1', [], {maxRows: 1000}).options.rowMode).toBe ('object')
 	expect (db.call ('SELECT 1', [], {maxRows: 1000, rowMode: 'array'}).options.rowMode).toBe ('array')
+	expect (db.call ('SELECT 1', [], {maxRows: 1000, rowMode: 'array'}).options.checkOverflow).toBe (false)
 
 })
 
