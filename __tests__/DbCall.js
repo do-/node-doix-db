@@ -119,3 +119,25 @@ test ('fetchArray maxRows', async () => {
 	])
 
 })
+
+test ('fetchArray checkOverflow ok', async () => {
+
+	const db = new MockDb (), cl = db.call ('SELECT 1', [], {maxRows: 3, checkOverflow: true})
+
+	cl.rows = Readable.from (SAMPLE_RECORDS)
+
+	await cl.fetchArray ()
+
+	expect (cl.rows).toStrictEqual (SAMPLE_RECORDS)
+
+})
+
+test ('fetchArray checkOverflow error', async () => {
+
+	const db = new MockDb (), cl = db.call ('SELECT 1', [], {maxRows: 2, checkOverflow: true})
+
+	cl.rows = Readable.from (SAMPLE_RECORDS)
+
+	await expect (cl.fetchArray ()).rejects.toThrow ()
+
+})
