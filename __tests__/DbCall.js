@@ -1,6 +1,7 @@
 const {Readable, Transform} = require ('stream')
 const DbCall = require ('../lib/DbCall.js')
 const MockDb = require ('./lib/MockDb.js')
+const { createDiffieHellmanGroup } = require('crypto')
 
 const SAMPLE_RECORDS = [
 	{id: 1, label: 'one'},
@@ -166,14 +167,64 @@ test ('fetchStream checkOverflow error', async () => {
 
 test ('flattenStream', async () => {
 
-	const db = new MockDb (), cl = db.call ('SELECT 1', [], {maxRows: 1000})
+	const db = new MockDb (), cl = db.call ('SELECT 1', [], {maxRows: 1000, rowMode: 'scalar'})
 
 	cl.rows = Readable.from ([[1], [2]])
 
-	cl.flattenStream ()
+	let cnt = 0; cl.on ('finish', () => cnt ++)
 
+	cl.processStream ()
 	await cl.fetchStream ()
 
 	expect (cl.rows).toStrictEqual ([1, 2])
+
+	expect (cnt).toBe (1)
+
+})
+
+test ('processStream ok', async () => {
+
+	const db = new MockDb (), cl = db.call ('SELECT 1', [], {maxRows: Infinity})
+
+	cl.rows = Readable.from (SAMPLE_RECORDS)
+
+	let cnt = 0; cl.on ('finish', () => cnt ++)
+
+	await cl.processStream ()
+
+	expect (cnt).toBe (0)
+
+	await cl.fetchStream ()
+
+	expect (cl.rows).toStrictEqual (SAMPLE_RECORDS)
+
+	expect (cnt).toBe (1)
+
+})
+
+test ('processStream error', async () => {
+
+	const db = new MockDb (), cl = db.call ('SELECT 1', [], {
+		maxRows: 1000, 
+		rowMode: 'scalar'
+	})
+
+	cl.rows = Readable.from (SAMPLE_RECORDS)
+	.pipe (new Transform ({
+		objectMode: true,
+		highWaterMark: 1,
+		transform (r, __, cb) {			
+			if (r.id == 1) return cb (null, r)
+			cb (Error ('test'))
+		}		
+	}))
+	
+	cl.processStream ()
+
+	let err = 0; cl.on ('error', () => err ++)
+
+	await expect (cl.fetchStream ()).rejects.toThrow ()
+
+	expect (err).toBe (1)
 
 })
