@@ -30,7 +30,7 @@ test ('construct', () => {
 	const db = new MockDb ()
 
 	expect (db.call ('SELECT 1')).toBeInstanceOf (DbCall)
-	expect (db.call ('SELECT 1', [], {maxRows: 1000}).options.rowMode).toBe ('object')
+	expect (db.call ('SELECT 1', [], {maxRows: 1000}).objectMode).toBe (true)
 	expect (db.call ('SELECT 1', [], {maxRows: 1000, rowMode: 'array'}).options.rowMode).toBe ('array')
 	expect (db.call ('SELECT 1', [], {maxRows: 1000, rowMode: 'array'}).options.checkOverflow).toBe (false)
 
