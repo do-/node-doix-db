@@ -49,6 +49,18 @@ test ('finish', () => {
 
 })
 
+test ('flattenArray', () => {
+
+	const db = new MockDb (), cl = db.call ('SELECT 1')
+
+	cl.rows = [[1], [2], [3]]
+
+	cl.flattenArray ()
+
+	expect (cl.rows).toStrictEqual ([1, 2, 3])
+
+})
+
 test ('normalizeSQL', () => {
 
 	const db = new MockDb ()
