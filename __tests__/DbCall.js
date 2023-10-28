@@ -153,3 +153,17 @@ test ('fetchArray checkOverflow error', async () => {
 	await expect (cl.fetchArray ()).rejects.toThrow ()
 
 })
+
+test ('flattenStream', async () => {
+
+	const db = new MockDb (), cl = db.call ('SELECT 1', [], {maxRows: 1000})
+
+	cl.rows = Readable.from ([[1], [2]])
+
+	cl.flattenStream ()
+
+	await cl.fetchArray ()
+
+	expect (cl.rows).toStrictEqual ([1, 2])
+
+})
