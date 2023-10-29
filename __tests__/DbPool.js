@@ -1,5 +1,5 @@
 const {ConsoleLogger} = require ('doix')
-const {DbPool, DbLang, DbModel, DbEventLogger, DbRelation, DbTable, DbView} = require ('..')
+const {DbPool, DbLang, DbModel, DbCallTracker, DbRelation, DbTable, DbView} = require ('..')
 const Path = require ('path')
 const EventEmitter = require ('events')
 
@@ -7,9 +7,9 @@ const src = Path.join (__dirname, 'data', 'root1')
 
 test ('pojo', () => {
 
-	const pool = new DbPool ({eventLoggerClass: Object})
+	const pool = new DbPool ({trackerClass: Object})
 
-	expect (pool.eventLoggerClass).toBe (Object)
+	expect (pool.trackerClass).toBe (Object)
 
 })
 
@@ -31,7 +31,7 @@ test ('model', async () => {
 
 	expect (pool.model).toBe (model)
 	expect (pool.logger).toBe (logger)
-	expect (pool.eventLoggerClass).toBe (DbEventLogger)
+	expect (pool.trackerClass).toBe (DbCallTracker)
 		
 	const job = new EventEmitter ()
 	

@@ -1,5 +1,5 @@
 const EventEmitter = require ('events')
-const {DbEventLogger} = require ('..')
+const {DbCallTracker} = require ('..')
 
 test ('pre 1', () => {
 
@@ -9,7 +9,7 @@ test ('pre 1', () => {
 		on: x => x
 	}
 	
-	const l = new DbEventLogger (client)
+	const l = new DbCallTracker (client)
 			
 	expect (l.prefix).toBe ('2/1')
 
@@ -23,7 +23,7 @@ test ('pre 2', () => {
 		on: x => x
 	}
 	
-	const l = new DbEventLogger (client)
+	const l = new DbCallTracker (client)
 			
 	expect (l.prefix).toBe ('3/2/1')
 
@@ -40,7 +40,7 @@ test ('start 1', () => {
 	client.job = job
 	client.logger = logger
 		
-	const l = new DbEventLogger (client)
+	const l = new DbCallTracker (client)
 
 	client.emit ('start', {sql: 'SELECT 1', params: []})
 	client.emit ('finish')
@@ -61,8 +61,8 @@ test ('start 1', () => {
 
 test ('sp', () => {
 
-	expect (DbEventLogger.stringifyParams ([])).toBe ('')
-	expect (DbEventLogger.stringifyParams ({id: 1})).toBe ('{"id":1}')
-	expect (DbEventLogger.stringifyParams (["Don't", 1, true])).toBe ("['Don''t', 1, true]")
+	expect (DbCallTracker.stringifyParams ([])).toBe ('')
+	expect (DbCallTracker.stringifyParams ({id: 1})).toBe ('{"id":1}')
+	expect (DbCallTracker.stringifyParams (["Don't", 1, true])).toBe ("['Don''t', 1, true]")
 
 })

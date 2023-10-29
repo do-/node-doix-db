@@ -1,6 +1,6 @@
 module.exports = {
 
-	DbEventLogger : require ('./lib/DbEventLogger.js'),
+	DbCallTracker : require ('./lib/DbCallTracker.js'),
 	DbClient:       require ('./lib/DbClient.js'),
 	DbPool:         require ('./lib/DbPool.js'), 
 	DbLang:         require ('./lib/DbLang.js'),
