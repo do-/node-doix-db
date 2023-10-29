@@ -1,59 +1,36 @@
 const EventEmitter = require ('events')
 const {DbCallTracker} = require ('..')
 
-test ('pre 1', () => {
-
-	const client = {
-		uuid: 1,
-		job: {uuid: 2},
-		on: x => x
-	}
-	
-	const l = new DbCallTracker (client)
-			
-	expect (l.prefix).toBe ('2/1')
-
-})
-
-test ('pre 2', () => {
-
-	const client = {
-		uuid: 1,
-		job: {uuid: 2, parent: {uuid: 3}},
-		on: x => x
-	}
-	
-	const l = new DbCallTracker (client)
-			
-	expect (l.prefix).toBe ('3/2/1')
-
-})
-
 test ('start 1', () => {
 
 	const a = [], logger = {log: m => a.push (m)}
 
-	const job = {uuid: '2'}
+	const job = {tracker: {prefix: '2'}}
 
-	const client = new EventEmitter ()
-	client.uuid = '1'
-	client.job = job
-	client.logger = logger
+	const call = new EventEmitter ()
+	call.ord = '3'
+	call.db = {job, pool: {logger}, uuid: 1}
 		
-	const l = new DbCallTracker (client)
+	const l = new DbCallTracker (call)
 
-	client.emit ('start', {sql: 'SELECT 1', params: []})
-	client.emit ('finish')
+	expect (l.prefix).toBe ('2/1/3')
 
-	client.emit ('start', {sql: 'SELECT ?', params: [1]})
-	client.emit ('finish')
+	call.sql = 'SELECT 1'	
+	call.params = []	
+	call.emit ('start')
+	call.emit ('finish')
 
+	call.sql = 'SELECT ?'	
+	call.params = [1]
+	call.emit ('start')
+	call.emit ('finish')
+	
 	expect (a).toHaveLength (4)
 	
-	expect (a [0].message).toBe ("2/1 > SELECT 1")
-	expect (a [1].message.slice (0, 6)).toBe ("2/1 < ")
-	expect (a [2].message).toBe ("2/1 > SELECT ? [1]")
-	expect (a [3].message.slice (0, 6)).toBe ("2/1 < ")
+	expect (a [0].message).toBe ("2/1/3 > SELECT 1")
+	expect (a [1].message.slice (0, 8)).toBe ("2/1/3 < ")
+	expect (a [2].message).toBe ("2/1/3 > SELECT ? [1]")
+	expect (a [3].message.slice (0, 8)).toBe ("2/1/3 < ")
 
 	for (const {level} of a ) expect (level).toBe ("info")
 

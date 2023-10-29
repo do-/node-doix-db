@@ -1,7 +1,6 @@
 const {Readable, Transform} = require ('stream')
 const DbCall = require ('../lib/DbCall.js')
 const MockDb = require ('./lib/MockDb.js')
-const { createDiffieHellmanGroup } = require('crypto')
 
 const SAMPLE_RECORDS = [
 	{id: 1, label: 'one'},
@@ -268,5 +267,4 @@ test ('exec', async () => {
 		expect (r [0].id).toBe (1)
 	}
 	
-
 })

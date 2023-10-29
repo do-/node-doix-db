@@ -1,6 +1,10 @@
 const Path = require ('path')
 const {Readable} = require ('stream')
-const {DbClient, DbLang, DbModel, DbTable} = require ('../..')
+const {DbClient, DbLang, DbModel, DbPool} = require ('../..')
+
+const pool = new DbPool ({
+	logger: {log: m => null}
+})
 
 const src = Path.join (__dirname, '..', 'data', 'root1')
 
@@ -28,6 +32,10 @@ module.exports = class extends DbClient {
 		jest.resetModules ()
 
 		super ()
+
+		this.job = {tracker: {prefix: '1/2'}}
+
+		this.pool = pool
 		
 		this.lang = new DbLang ()
 
