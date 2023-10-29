@@ -3,7 +3,10 @@ const {Readable} = require ('stream')
 const {DbClient, DbLang, DbModel, DbPool} = require ('../..')
 
 const pool = new DbPool ({
-	logger: {log: m => null}
+	logger: {log: m =>
+//console.log (m)		 
+		null
+	}
 })
 
 const src = Path.join (__dirname, '..', 'data', 'root1')
@@ -54,10 +57,17 @@ module.exports = class extends DbClient {
 
 		if (!cl.sql) throw Error ('Empty SQL')
 
-		cl.rows = cl.options.maxRows === 3 ? RS : Readable.from (RS)
+		cl.rows = 
+			cl.options.maxRows === 3 ? RS 
+			: cl.sql === '0' ? []
+			: cl.sql === 'SELECT NULL' ? [[null]]
+			: cl.sql.indexOf ('COUNT') > -1 ? [[RS.length]]
+			: Readable.from (RS)
+
+		cl.columns = COLS
 
 	}
-
+/*
 	async getStream (sql, params = [], options = {}) {
 
 		if (!sql) return r ([])
@@ -69,7 +79,7 @@ module.exports = class extends DbClient {
 		return r (RS)
 
 	}
-	
+	*/
 	async getStreamOfExistingTables () {
 
 		const {model} = this, {defaultSchema} = model

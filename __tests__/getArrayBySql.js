@@ -6,9 +6,9 @@ test ('getArrayBySql', async () => {
 
 	expect (await db.getArrayBySql ('SELECT', [], {})).toHaveLength (2)
 
-	expect (await db.getArrayBySql ('SELECT', [], {maxRows: 1, isPartial: true})).toHaveLength (1)
+	expect (await db.getArrayBySql ('SELECT', [], {maxRows: 1})).toHaveLength (1)
 
-	await expect (db.getArrayBySql ('SELECT', [], {maxRows: 1})).rejects.toThrow ()
+	await expect (db.getArrayBySql ('SELECT', [], {maxRows: 1, checkOverflow: true})).rejects.toThrow ()
 
 	
 })
