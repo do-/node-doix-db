@@ -257,6 +257,12 @@ test ('exec', async () => {
 	}
 
 	{
+		const cl = await db.call ('SELECT *', [], {maxRows: 1})
+		const r = await cl.exec ()
+		expect (r.id).toBe (1)
+	}
+
+	{
 		const cl = await db.call ('SELECT *', [], {maxRows: 1000})
 		const r = await cl.exec ()
 		expect (r [0].id).toBe (1)
