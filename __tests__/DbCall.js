@@ -228,3 +228,39 @@ test ('processStream error', async () => {
 	expect (err).toBe (1)
 
 })
+
+test ('exec', async () => {
+
+	const db = new MockDb ()
+
+	{
+		const cl = await db.call ('', [])
+		await expect (cl.exec ()).rejects.toThrow ()
+	}
+
+	{
+		const cl = await db.call ('SELECT *', [], {maxRows: 0})
+		const r = await cl.exec ()
+		expect (r).toBeUndefined ()
+	}
+
+	{
+		const cl = await db.call ('SELECT *', [], {maxRows: Infinity})
+		const r = await cl.exec ()
+		expect (r).toBeInstanceOf (Readable)
+	}
+
+	{
+		const cl = await db.call ('SELECT *', [], {maxRows: 3})
+		const r = await cl.exec ()
+		expect (r [0].id).toBe (1)
+	}
+
+	{
+		const cl = await db.call ('SELECT *', [], {maxRows: 1000})
+		const r = await cl.exec ()
+		expect (r [0].id).toBe (1)
+	}
+	
+
+})

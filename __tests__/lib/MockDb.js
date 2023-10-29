@@ -42,6 +42,14 @@ module.exports = class extends DbClient {
 	
 	}
 
+	async exec (cl) {
+
+		if (!cl.sql) throw Error ('Empty SQL')
+
+		cl.rows = cl.options.maxRows === 3 ? RS : Readable.from (RS)
+
+	}
+
 	async getStream (sql, params = [], options = {}) {
 
 		if (!sql) return r ([])
