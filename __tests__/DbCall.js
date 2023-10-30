@@ -19,6 +19,7 @@ test ('bad', () => {
 	expect (() => db.call ('SELECT 1', [], {checkOverflow: true})).toThrow ('checkOverflow')
 	expect (() => db.call ('SELECT 1', [], {maxRows: 1000, checkOverflow: 1})).toThrow ('checkOverflow')
 	expect (() => db.call ('SELECT 1', [], {maxRows: '1000'})).toThrow ('maxRows')
+	expect (() => db.call ('SELECT 1', [], {notFound: '1000'})).toThrow ('notFound')
 	expect (() => db.call ('SELECT 1', [], {maxRows: -1})).toThrow ('maxRows')
 	expect (() => db.call ('SELECT 1', [], {rowMode: 'object'})).toThrow ('rowMode')
 	expect (() => db.call ('SELECT 1', [], {maxRows: 1000, rowMode: 'map'})).toThrow ('rowMode')
@@ -277,6 +278,13 @@ test ('exec', async () => {
 	{
 		const cl = await db.call ('SELECT *', [], {maxRows: 1000, minRows: 3})
 		await expect (cl.exec ()).rejects.toThrow ()
+	}
+
+	{
+		const notFound = {}
+		const cl = await db.call ('SELECT *', [], {maxRows: 1000, minRows: 3, notFound})
+		const r = await cl.exec ()
+		expect (r).toBe (notFound)
 	}
 
 })
