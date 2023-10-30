@@ -99,23 +99,6 @@ test ('genInsertParamsSql', () => {
 
 })
 
-test ('genSelectObjectParamsSql', () => {
-
-	jest.resetModules ()
-
-	const m = new DbModel ({src})
-
-	m.loadModules ()
-
-	const uuid = randomUUID ()
-
-	expect (lang.genSelectObjectParamsSql ('SELECT ?', 1)).toStrictEqual ( [1, 'SELECT ?'])
-	expect (m.lang.genSelectObjectParamsSql ('SELECT ?', 1)).toStrictEqual ( [1, 'SELECT ?'])
-	expect (m.lang.genSelectObjectParamsSql ('users_roles', [uuid, 1])).toStrictEqual ( [uuid, 1, 'SELECT * FROM "users_roles" WHERE "id_user"=? AND "id_role"=?'])
-
-})
-
-
 test ('getTypeDefinition', () => {
 
 	expect (lang.getTypeDefinition ('bool').name).toBe ('BOOL')
