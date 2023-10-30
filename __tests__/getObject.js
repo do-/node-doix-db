@@ -10,8 +10,6 @@ test ('getObject', async () => {
 
 	expect (await db.getObject ('0', [], {notFound: DEF})).toBe (DEF)
 	
-	await expect (db.getObject ('0', [], {notFound: Error (1)})).rejects.toThrow ()
-
 	const a = []; db.pool.logger.log = m => a.push (m.message)
 
 	expect (await db.getObject ('roles', [1])).toStrictEqual ({id: 1, name: 'admin', label: 'System Administrator'})
@@ -21,7 +19,7 @@ test ('getObject', async () => {
 
 	db.model = undefined
 
-	expect (await db.getObject ('0')).toStrictEqual ({})
+	await expect (db.getObject ('0')).rejects.toThrow ()
 
 })
 
