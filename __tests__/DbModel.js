@@ -23,6 +23,8 @@ test ('basic', () => {
 	m.loadModules ()
 	
 	expect ([...m.defaultSchema.map.keys ()].sort ()).toStrictEqual (['do_it', 'get_time', 'roles', 'users', 'users_roles', 'vw_roles'])
+
+	expect (m.find (true)).toBeUndefined ()
 	
 	const roles = m.find ('roles')
 	
