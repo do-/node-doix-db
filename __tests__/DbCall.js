@@ -22,6 +22,11 @@ test ('bad', () => {
 	expect (() => db.call ('SELECT 1', [], {maxRows: -1})).toThrow ('maxRows')
 	expect (() => db.call ('SELECT 1', [], {rowMode: 'object'})).toThrow ('rowMode')
 	expect (() => db.call ('SELECT 1', [], {maxRows: 1000, rowMode: 'map'})).toThrow ('rowMode')
+	expect (() => db.call ('SELECT 1', [], {minRows: 1})).toThrow ('minRows')
+	expect (() => db.call ('SELECT 1', [], {minRows: -1, maxRows: 1000})).toThrow ('minRows')
+	expect (() => db.call ('SELECT 1', [], {minRows: '1', maxRows: 1000})).toThrow ('minRows')
+	expect (() => db.call ('SELECT 1', [], {minRows: 1001, maxRows: 1000})).toThrow ('minRows')
+	expect (() => db.call ('SELECT 1', [], {minRows: 1, maxRows: Infinity})).toThrow ('minRows')
 
 })
 
@@ -41,6 +46,8 @@ test ('finish', () => {
 	const db = new MockDb (), cl = db.call ('SELECT 1')
 
 	let cnt = 0; cl.on ('finish', () => cnt ++)
+
+	cl.rows = []
 
 	cl.processArray ()
 	cl.finish ()
@@ -262,9 +269,14 @@ test ('exec', async () => {
 	}
 
 	{
-		const cl = await db.call ('SELECT *', [], {maxRows: 1000})
+		const cl = await db.call ('SELECT *', [], {maxRows: 1000, minRows: 2})
 		const r = await cl.exec ()
 		expect (r [0].id).toBe (1)
 	}
-	
+
+	{
+		const cl = await db.call ('SELECT *', [], {maxRows: 1000, minRows: 3})
+		await expect (cl.exec ()).rejects.toThrow ()
+	}
+
 })
