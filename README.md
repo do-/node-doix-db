@@ -2,4 +2,11 @@
 ![Jest coverage](./badges/coverage-jest%20coverage.svg)
 
 # node-doix-db
-Shared database related code for doix
+`doix-db` is a plug in for [doix](https://github.com/do-/node-doix) framework implementing a common interface to relational databases. It features:
+* [DbClient](DbClient) — the database API available to `doix` [Job](https://github.com/do-/node-doix/wiki/Job)s;
+* [DbModel](DbModel) — the set of classes representing the database structure;
+* [DbQuery](DbQuery) — a `DbModel` based `SELECT` builder;
+* [DbMigrationPlan](DbMigrationPlan) — a diff/patch tool to compare existing database structure with the required `DbModel`;
+* [DbLang](DbLang) — a set of SQL generating functions for miscellaneous application tasks.
+
+* More information is available at https://github.com/do-/node-doix-db/wiki
