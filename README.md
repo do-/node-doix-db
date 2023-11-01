@@ -6,7 +6,7 @@
 * [DbClient](DbClient) — the database API available to `doix` [Job](https://github.com/do-/node-doix/wiki/Job)s;
 * [DbModel](DbModel) — the set of classes representing the database structure;
 * [DbQuery](DbQuery) — a `DbModel` based `SELECT` builder;
-* [DbMigrationPlan](DbMigrationPlan) — a diff/patch tool to compare existing database structure with the required `DbModel`;
+* [DbMigrationPlan](DbMigrationPlan) — a `DbModel` based deployment automation tool;
 * [DbLang](DbLang) — a set of SQL generating functions for miscellaneous application tasks.
 
 * More information is available at https://github.com/do-/node-doix-db/wiki
