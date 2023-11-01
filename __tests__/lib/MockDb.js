@@ -50,6 +50,8 @@ module.exports = class extends DbClient {
 		this.model.loadModules ()
 
 		this.model.getSchema ('log').add ('pro', {body: ''})
+
+		this.lang.model = this.model
 	
 	}
 

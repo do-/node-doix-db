@@ -9,3 +9,19 @@ test ('do', async () => {
 	
 })
 
+test ('insert', async () => {
+
+	const db = new MockDb () 
+
+	await db.insert ('users', {})
+	
+})
+
+test ('update', async () => {
+
+	const db = new MockDb () 
+
+	await db.update ('users', {uuid: 1})
+	await db.update ('users', {uuid: 1, label: '1'})
+	
+})
