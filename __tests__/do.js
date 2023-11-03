@@ -2,10 +2,17 @@ const MockDb = require ('./lib/MockDb.js')
 
 test ('do', async () => {
 
-	const db = new MockDb (), call = await db.do ('COMMIT')
+	const db = new MockDb (), {trackerClass} = db.pool
+
+	const a = []; db.pool = {trackerClass, logger: {log: m => a.push (m.message)}}
+
+	const call = await db.do ('COMMIT')
 
 	expect (call.sql).toBe ('COMMIT')
 	expect (call.options.maxRows).toBe (0)
+	expect (a).toHaveLength (2)
+	expect (a [0]).toMatch (/ > /)
+	expect (a [1]).toMatch (/ < /)
 	
 })
 
