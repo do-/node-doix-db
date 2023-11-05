@@ -1,6 +1,6 @@
 {
   "name": "doix-db",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "Shared database related code for doix",
   "main": "index.js",
   "files": [
