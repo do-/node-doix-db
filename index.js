@@ -23,6 +23,8 @@ module.exports = {
 	DbTypeArithmeticFloat: require ('./lib/model/types/DbTypeArithmeticFloat.js'),
 	DbTypeArithmeticInt:   require ('./lib/model/types/DbTypeArithmeticInt.js'),
 	DbTypeCharacter:       require ('./lib/model/types/DbTypeCharacter.js'),
+	DbTypeDate:            require ('./lib/model/types/DbTypeDate.js'),
+	DbTypeTimestamp:       require ('./lib/model/types/DbTypeTimestamp.js'),
 
 	DbMigrationPlan:require ('./lib/migration/DbMigrationPlan.js'),
 	DbQuery:        require ('./lib/query/DbQuery.js'),

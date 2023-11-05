@@ -3,6 +3,8 @@ const {DbLang, DbTable, DbView, DbModel, DbColumn
 	, DbTypeArithmeticFloat 
 	, DbTypeArithmeticInt 
 	, DbTypeCharacter 
+	, DbTypeDate
+	, DbTypeTimestamp
 } = require ('..')
 const Path = require ('path')
 const {randomUUID} = require ('crypto')
@@ -107,6 +109,8 @@ test ('getTypeDefinition', () => {
 	expect (lang.getTypeDefinition ('numeric')).toBeInstanceOf (DbTypeArithmeticFixed)
 	expect (lang.getTypeDefinition ('CHAR')).toBeInstanceOf (DbTypeCharacter)
 	expect (lang.getTypeDefinition ('varchar')).toBeInstanceOf (DbTypeCharacter)
+	expect (lang.getTypeDefinition ('Date')).toBeInstanceOf (DbTypeDate)
+	expect (lang.getTypeDefinition ('timestamp')).toBeInstanceOf (DbTypeTimestamp)
 
 })
 
