@@ -20,14 +20,14 @@ test ('constructor', () => {
 	const db = new MockDb ()
 
 	{
-		const p = new DbCsvPrinter ({
+		const p = db.toCsv ({
 			table: db.model.find ('users'),
 		})
 		expect (p.columns).toHaveLength (4)
 	}
 
 	{
-		const p = new DbCsvPrinter ({
+		const p = db.toCsv ({
 			table: db.model.find ('users'),
 			columns: ['uuid', 'label'],
 		})
