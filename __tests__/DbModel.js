@@ -1,4 +1,4 @@
-const {DbModel, DbLang, DbSchemaSource, DbObjectMerger, DbTable, DbView, DbProcedure} = require ('..')
+const {DbModel, DbLang, DbSchemaSource, DbObjectMerger, DbTable, DbView, DbProcedure, DbTypeArithmeticInt} = require ('..')
 const Path = require ('path')
 
 const src = Path.join (__dirname, 'data', 'root1')
@@ -184,5 +184,6 @@ test ('ref: custom col', () => {
 
 	expect (users.columns.id_role.reference.targetRelation).toBe (roles)
 	expect (users.columns.id_role.reference.targetColumn).toBe (roles.columns.id)
-				
+	expect (users.columns.id_role.typeDef).toBeInstanceOf (DbTypeArithmeticInt)
+
 })
