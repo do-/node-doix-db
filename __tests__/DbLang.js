@@ -101,6 +101,20 @@ test ('genInsertParamsSql', () => {
 
 })
 
+test ('genInsertParamsSql', () => {
+
+	jest.resetModules ()
+
+	const m = new DbModel ({src})
+	
+	m.loadModules ()
+
+	expect (m.lang.genCreateTempTable (m.find ('users'), {onlyIfMissing: true})).toMatch (/IF NOT EXIST/)
+	expect (m.lang.genCreateTempTable (m.find ('users'))).not.toMatch (/IF NOT EXIST/)
+	
+})
+
+
 test ('getTypeDefinition', () => {
 
 	expect (lang.getTypeDefinition ('bool').name).toBe ('BOOL')
@@ -113,7 +127,6 @@ test ('getTypeDefinition', () => {
 	expect (lang.getTypeDefinition ('timestamp')).toBeInstanceOf (DbTypeTimestamp)
 
 })
-
 
 test ('isAdequateColumnType', () => {
 

@@ -32,3 +32,12 @@ test ('update', async () => {
 	await db.update ('users', {uuid: 1, label: '1'})
 	
 })
+
+test ('createTempTable', async () => {
+
+	const db = new MockDb () 
+
+	await db.createTempTable ('users', {onlyIfMissing: true})
+	await db.createTempTable (db.model.find ('users'), {})
+	
+})
