@@ -18,16 +18,6 @@ const RS = [
 
 const COLS = Object.keys (RS [0]).map (name => ({name}))
 
-const r = a => {
-
-	const s = Readable.from (a)
-	
-	s [Symbol.for ('columns')] = COLS
-	
-	return s
-
-}
-
 module.exports = class extends DbClient {
 
 	constructor () {
@@ -69,19 +59,7 @@ module.exports = class extends DbClient {
 		cl.columns = COLS
 
 	}
-/*
-	async getStream (sql, params = [], options = {}) {
 
-		if (!sql) return r ([])
-		
-		if (sql === 'SELECT NULL') return r ([Symbol.for ('NULL')])
-
-		if (sql.indexOf ('COUNT') > -1) return r ([RS.length])
-
-		return r (RS)
-
-	}
-	*/
 	async getStreamOfExistingTables () {
 
 		const {model} = this, {defaultSchema} = model
