@@ -1,12 +1,24 @@
 const MockDb = require ('./lib/MockDb.js')
 
+test ('misc', async () => {
+
+	const db = new MockDb ()
+
+	await expect (db.do (1)).rejects.toThrow ()
+	await expect (db.do ({})).rejects.toThrow ()
+	await expect (db.do ([])).rejects.toThrow ()
+	await expect (db.do (['SELECT', 'SELECT', 'SELECT'])).rejects.toThrow ()
+
+})
+
+
 test ('do', async () => {
 
 	const db = new MockDb (), {trackerClass} = db.pool
 
 	const a = []; db.pool = {trackerClass, logger: {log: m => a.push (m.message)}}
 
-	const call = await db.do ('COMMIT')
+	const call = await db.do ({sql: 'COMMIT', params: []})
 
 	expect (call.sql).toBe ('COMMIT')
 	expect (call.options.maxRows).toBe (0)

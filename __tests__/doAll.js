@@ -21,8 +21,8 @@ test ('doAll array', async () => {
 	const a = []; db.pool = {trackerClass, logger: {log: m => a.push (m.message)}}
 
 	await db.doAll ([
-		{sql: 'COMMIT'},
-		{sql: 'COMMIT'},
+		'COMMIT',
+		['COMMIT'],
 	])
 
 	expect (a).toHaveLength (4)
@@ -40,7 +40,7 @@ test ('doAll stream', async () => {
 	const a = []; db.pool = {trackerClass, logger: {log: m => a.push (m.message)}}
 
 	await db.doAll (Readable.from ([
-		{sql: 'COMMIT'},
+		['COMMIT', []],
 		{sql: 'COMMIT'},
 	]))
 
