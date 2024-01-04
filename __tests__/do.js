@@ -16,6 +16,8 @@ test ('do', async () => {
 
 	const db = new MockDb (), {trackerClass} = db.pool
 
+	expect (db.txn).toBeNull ()
+
 	const a = []; db.pool = {trackerClass, logger: {log: m => a.push (m.message)}}
 
 	const call = await db.do ({sql: 'COMMIT', params: []})
