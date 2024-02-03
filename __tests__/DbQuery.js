@@ -85,7 +85,7 @@ test ('bad', () => {
 				]
 			}],
 		])
-	}).toThrow ()
+	}).toThrow ('Unknown comparison operator: DISLIKE')
 
 	expect (() => {
 		m.createQuery ([
