@@ -105,6 +105,17 @@ test ('bad', () => {
 		])
 	}).toThrow ()
 
+	expect (() => {
+		m.createQuery ([
+			['users', {
+				as: 'u1',
+				filters: [
+					['id_rrrole', '=', 0],
+				]
+			}],
+		])
+	}).toThrow ('users.id_rrrole')
+
 })
 
 test ('not in model', () => {
