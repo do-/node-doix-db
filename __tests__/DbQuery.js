@@ -115,7 +115,38 @@ test ('bad', () => {
 			}],
 		])
 	}).toThrow ('users.id_rrrole')
+	
+	expect (() => {
+		m.createQuery ([
+			['users', {
+				as: 'u1',
+				filters: [
+					['label', 'IN', '?'],
+				]
+			}],
+		])
+	}).toThrow ('string value not allowed for u1.label IN')
 
+	expect (() => {
+		m.createQuery ([
+			['users', {
+				filters: [
+					['id_role', 'IN', {sql: 'SELECT ?', params: 1}],
+				]
+			}],
+		], {order: ['label']})
+	}).toThrow ('Array value is required')
+
+	expect (() => {
+		m.createQuery ([
+			['users', {
+				filters: [
+					['id_role', 'IN', {}],
+				]
+			}],
+		], {order: ['label']})
+	}).toThrow ('Array value is required')
+	
 })
 
 test ('not in model', () => {
@@ -165,7 +196,6 @@ test ('basic', () => {
 	expect (q.toQueryCount ().toParamsSql ()).toStrictEqual (['%', 1, 2, 1, 2, 'SELECT COUNT(*) AS "cnt" FROM "users" AS "users" WHERE "users"."label" LIKE ? AND "users"."id_role" IN (?,?) AND "users"."id_role" BETWEEN ? AND ?'])
 
 })
-
 
 test ('ilike', () => {
 
@@ -294,5 +324,43 @@ test ('empty sets', () => {
 	])
 
 	expect (q.toParamsSql ()).toStrictEqual (['SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."is_actual" AS "is_actual","users"."id_role" AS "id_role" FROM "public"."users" AS "users" WHERE 0=1 AND 0=0'])
+
+})
+
+test ('subselect', () => {
+
+	jest.resetModules ()
+	const m = new DbModel ({src, foo: undefined})	
+	m.loadModules ()
+
+	{
+
+		const q = m.createQuery ([
+			['users', {
+				filters: [
+					['id_role', 'IN', {sql: 'SELECT 1'}],
+					['label', 'LIKE', '%'],
+				]
+			}],
+		], {order: ['label']})
+
+		expect (q.toParamsSql ()).toStrictEqual (['%', 'SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."is_actual" AS "is_actual","users"."id_role" AS "id_role" FROM "users" AS "users" WHERE "users"."id_role" IN (SELECT 1) AND "users"."label" LIKE ? ORDER BY "users"."label"'])
+
+	}
+
+	{
+
+		const q = m.createQuery ([
+			['users', {
+				filters: [
+					['id_role', 'IN', {sql: 'SELECT id FROM roles WHERE label = ?', params: ['admin']}],
+					['label', 'LIKE', '%'],
+				]
+			}],
+		], {order: ['label']})
+
+		expect (q.toParamsSql ()).toStrictEqual (['admin', '%', 'SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."is_actual" AS "is_actual","users"."id_role" AS "id_role" FROM "users" AS "users" WHERE "users"."id_role" IN (SELECT id FROM roles WHERE label = ?) AND "users"."label" LIKE ? ORDER BY "users"."label"'])
+
+	}
 
 })
