@@ -4,6 +4,25 @@ const Path = require ('path')
 
 const src = Path.join (__dirname, 'data', 'root1')
 
+test ('unknownColumnComparisons', () => {
+
+	jest.resetModules ()
+	const m = new DbModel ({src, foo: undefined})	
+	m.loadModules ()
+
+	const q = m.createQuery ([
+		['users', {
+			as: 'u1',
+			filters: [
+				['id_rrrole', '=', 0],
+			]
+		}],
+	])
+
+	expect (q.tables [0].unknownColumnComparisons).toStrictEqual ([['id_rrrole', '=', 0]])
+
+})
+
 test ('bad', () => {
 
 	jest.resetModules ()
@@ -110,17 +129,6 @@ test ('bad', () => {
 			['users', {
 				as: 'u1',
 				filters: [
-					['id_rrrole', '=', 0],
-				]
-			}],
-		])
-	}).toThrow ('users.id_rrrole')
-	
-	expect (() => {
-		m.createQuery ([
-			['users', {
-				as: 'u1',
-				filters: [
 					['label', 'IN', '?'],
 				]
 			}],
@@ -157,7 +165,7 @@ test ('not in model', () => {
 
 	const q = m.createQuery ([
 		['users'],
-		['DUAL', {join: 'INNER'}],
+		['DUAL', {join: 'INNER', filters: []}],
 		['DUAL', {as: '2'}],
 		['DUAL', {as: '3', on: '2.dummy = 3.dummy'}],
 		['roles'],
