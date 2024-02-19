@@ -1,8 +1,14 @@
 const {DbQueryNot} = require ('..')
 
+test ('null', () => {
+
+	expect (DbQueryNot.from (null)).toBeNull ()
+
+})
+
 test ('basic', () => {
 
-	const not = new DbQueryNot (
+	const not = DbQueryNot.from (
 		{sql: 'id = ?', params: [-1]},
 	)
 	
