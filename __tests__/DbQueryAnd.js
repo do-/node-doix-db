@@ -1,16 +1,14 @@
 const {DbQueryAnd} = require ('..')
 
-test ('bad', () => {
-	
-	const and = new DbQueryAnd ()
+test ('null', () => {
 
-	expect (() => and.sql).toThrow ()
+	expect (DbQueryAnd.from ([null, null])).toBeNull ()
 
 })
 
 test ('basic', () => {
 
-	const and = new DbQueryAnd ([
+	const and = DbQueryAnd.from ([
 		{sql: 'id = ?', params: [-1]},
 		{sql: 'id > ?', params: [10]},
 		{sql: 'id IS NULL'},
