@@ -6,6 +6,14 @@ test ('null', () => {
 
 })
 
+test ('single', () => {
+
+	const filter = {sql: 'id = ?', params: [1]}
+
+	expect (DbQueryAnd.from ([null, filter, null])).toBe (filter)
+
+})
+
 test ('basic', () => {
 
 	const and = DbQueryAnd.from ([
