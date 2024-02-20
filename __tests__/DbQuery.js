@@ -361,13 +361,22 @@ test ('subselect', () => {
 		const q = m.createQuery ([
 			['users', {
 				filters: [
-					['id_role', 'IN', {sql: 'SELECT id FROM roles WHERE label = ?', params: ['admin']}],
+					['id_role', 'IN', 
+						m.createQuery ([
+							['roles', {
+								columns: ['id'], 
+								filters: [
+									['label', '=', 'admin']
+								]
+							}]
+						])
+					],
 					['label', 'LIKE', '%'],
 				]
 			}],
 		], {order: ['label']})
 
-		expect (q.toParamsSql ()).toStrictEqual (['admin', '%', 'SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."is_actual" AS "is_actual","users"."id_role" AS "id_role" FROM "users" AS "users" WHERE "users"."id_role" IN (SELECT id FROM roles WHERE label = ?) AND "users"."label" LIKE ? ORDER BY "users"."label"'])
+		expect (q.toParamsSql ()).toStrictEqual (['admin', '%', 'SELECT "users"."uuid" AS "uuid","users"."label" AS "label","users"."is_actual" AS "is_actual","users"."id_role" AS "id_role" FROM "users" AS "users" WHERE "users"."id_role" IN (SELECT "roles"."id" AS "id" FROM "roles" AS "roles" WHERE "roles"."label" = ?) AND "users"."label" LIKE ? ORDER BY "users"."label"'])
 
 	}
 
