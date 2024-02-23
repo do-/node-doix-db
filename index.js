@@ -16,6 +16,7 @@ module.exports = {
 	DbSchemaSource: require ('./lib/model/DbSchemaSource.js'),
 	DbObject:       require ('./lib/model/DbObject.js'),
 	DbProcedure:    require ('./lib/model/DbProcedure.js'),
+	DbRoutine:      require ('./lib/model/DbRoutine.js'),
 	DbFunction:     require ('./lib/model/DbFunction.js'),
 	DbModel:        require ('./lib/model/DbModel.js'),
 	DbSchema:       require ('./lib/model/DbSchema.js'),
