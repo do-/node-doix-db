@@ -30,10 +30,10 @@ test ('basic', () => {
 	
 	expect (roles).toBeInstanceOf (DbTable)
 	expect (roles.pk).toStrictEqual (['id'])
-	expect (roles.data).toStrictEqual ([
+	expect (m.assignData ({id: 1}, ['roles'])).toStrictEqual ({id: 1, roles: [
         {id: 1, name: 'admin', label: 'System Administrator'},
         {id: 2, name: 'user',  label: 'Regular User'},
-    ])
+    ]})
 
 	expect (roles.keys.label.qName).toBe ('"roles_label"')
 	expect (roles.keys.u.qName).toBe ('"r_u"')
