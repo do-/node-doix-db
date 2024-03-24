@@ -1,4 +1,5 @@
 const MockDb = require ('./lib/MockDb.js')
+const DbCall = require ('../lib/DbCall.js')
 
 test ('misc', async () => {
 
@@ -34,8 +35,10 @@ test ('insert', async () => {
 
 	const db = new MockDb () 
 
-	await db.insert ('users', {})
-	
+	const r = await db.insert ('users', {})
+
+	expect (r).toBeInstanceOf (DbCall)
+
 })
 
 test ('update', async () => {

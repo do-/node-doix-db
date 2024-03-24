@@ -34,12 +34,14 @@ test ('explicit columns', async () => {
 
 	}
 
-	await db.insert ('roles', DATA, {columns: ['id', 'is_actual']})
+	const r = await db.insert ('roles', DATA, {columns: ['id', 'is_actual']})
 
 	expect (a).toStrictEqual ([
 		{id: 1},
 		{id: 2, is_actual: false},	
 	])
+
+	expect (r).toBeUndefined ()
 	
 })
 
