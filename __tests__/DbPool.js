@@ -19,8 +19,17 @@ test ('model', async () => {
 
 	const logger = ConsoleLogger.DEFAULT
 
-	const pool = new DbPool ({logger})
-	
+	class MyPool extends DbPool {
+		constructor () {
+			super ({logger})
+		}
+		async onAcquire (db) {
+			super.onAcquire (db)
+			db.__f = true
+		}
+	}
+	const pool = new MyPool
+
 	pool.lang = new DbLang ()
 
 	const model = new DbModel ({src, db: pool})
@@ -40,6 +49,7 @@ test ('model', async () => {
 		
 	await pool.toSet (job, 'db')
 	
+	expect (job.db.__f).toBe (true)
 	expect (job.db.model).toBe (model)
 	expect (job.db.lang).toBe (pool.lang)
 	
