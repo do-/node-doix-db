@@ -1,6 +1,6 @@
 {
   "name": "doix-db",
-  "version": "1.0.52",
+  "version": "1.0.53",
   "description": "Shared database related code for doix",
   "main": "index.js",
   "files": [
@@ -40,7 +40,7 @@
   },
   "homepage": "https://github.com/do-/node-doix-db#readme",
   "peerDependencies": {
-    "doix": "^1.0.22"
+    "doix": "^1.0.23"
   },
   "devDependencies": {
     "jest": "^29.6.1"
