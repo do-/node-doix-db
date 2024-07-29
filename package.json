@@ -1,6 +1,6 @@
 {
   "name": "doix-db",
-  "version": "1.0.58",
+  "version": "1.0.60",
   "description": "Shared database related code for doix",
   "main": "index.js",
   "files": [
@@ -40,12 +40,13 @@
   },
   "homepage": "https://github.com/do-/node-doix-db#readme",
   "peerDependencies": {
-    "doix": "^1.0.31"
+    "doix": "^1.0.32"
   },
   "devDependencies": {
     "jest": "^29.6.1"
   },
   "dependencies": {
-    "string-escape-map": "^1.0.0"
+    "string-escape-map": "^1.0.0",
+    "subclassable-object-merger": "^1.0.0"
   }
 }
