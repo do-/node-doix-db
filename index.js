@@ -7,6 +7,8 @@ module.exports = {
 	DbPool:         require ('./lib/DbPool.js'), 
 	DbLang:         require ('./lib/DbLang.js'),
 	DbCsvPrinter:   require ('./lib/DbCsvPrinter.js'),
+	DbQueue:        require ('./lib/DbQueue.js'),
+
 	DbColumn:       require ('./lib/model/DbColumn.js'),
 	DbReference:    require ('./lib/model/DbReference.js'),
 	DbObjectMerger: require ('./lib/model/DbObjectMerger.js'),

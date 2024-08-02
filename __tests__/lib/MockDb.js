@@ -1,6 +1,7 @@
 const Path = require ('path')
 const {Readable} = require ('stream')
-const {DbClient, DbLang, DbModel, DbPool} = require ('../..')
+const {Application} = require ('doix')
+	const {DbClient, DbLang, DbModel, DbPool} = require ('../..')
 
 const pool = new DbPool ({
 	logger: {log: m =>
@@ -18,6 +19,10 @@ const RS = [
 
 const COLS = Object.keys (RS [0]).map (name => ({name}))
 
+const app = new Application ({
+	modules: {dir: {root: __dirname}}
+})
+
 module.exports = class extends DbClient {
 
 	constructor () {
@@ -25,6 +30,8 @@ module.exports = class extends DbClient {
 		jest.resetModules ()
 
 		super ()
+
+		this.app = app
 
 		this.job = {tracker: {prefix: '1/2'}}
 
@@ -36,6 +43,8 @@ module.exports = class extends DbClient {
 			{root: src},
 			{name: 'log'},
 		]})
+
+		this.model.db = this
 
 		this.model.loadModules ()
 
