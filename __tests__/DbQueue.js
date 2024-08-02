@@ -11,6 +11,7 @@ const app = new Application ({
 test ('bad', () => {
 
 	expect (() => new DbQueue ({}, {})).toThrow ('order')
+	expect (() => new DbQueue ({}, {order: 'id', maxPending: 10})).toThrow ('ending')
 
 })
 
@@ -41,6 +42,8 @@ test ('not bad', async () => {
 	const {queue} = m.find ('q_users')
 
 	expect (queue).toBeInstanceOf (DbQueue)
+
+	expect (queue.maxPending).toBe (1)
 
 	const job = new EventEmitter ()
 	job.db = db
