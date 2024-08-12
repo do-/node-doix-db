@@ -4,8 +4,18 @@ const DbQueue = require ('../lib/DbQueue.js')
 const DbClient = require ('../lib/DbClient.js')
 const DbModel = require ('../lib/model/DbModel.js')
 
+const {Writable} = require ('stream')
+const winston = require ('winston')
+const logger = winston.createLogger({
+	transports: [
+//	  new winston.transports.Console (),
+	  new winston.transports.Stream ({stream: new Writable ({write(){}})})
+	]
+})
+
 const app = new Application ({
 	modules: {dir: {root: __dirname}}
+	, logger
 })
 
 test ('bad', () => {

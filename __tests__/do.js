@@ -1,6 +1,9 @@
 const MockDb = require ('./lib/MockDb.js')
 const DbCall = require ('../lib/DbCall.js')
 
+const {Writable} = require ('stream')
+const winston = require ('winston')
+
 test ('misc', async () => {
 
 	const db = new MockDb ()
@@ -15,20 +18,38 @@ test ('misc', async () => {
 
 test ('do', async () => {
 
-	const db = new MockDb (), {trackerClass} = db.pool
+	const db = new MockDb ()
+
+	let s = ''
+
+	const stream = new Writable ({
+		write (r, _, cb) {
+			s += r.toString ()
+			cb ()
+		}
+		
+	})
+
+	const tr = new winston.transports.Stream ({
+		stream,
+		format: winston.format.printf ((i => `${i.id} ${i.event === 'finish' ? i.elapsed + ' ms' : i.message}${i.details ? ' ' + JSON.stringify (i.details.params) : ''}`))
+	})
+	
+	db.pool.logger.add (tr)
 
 	expect (db.txn).toBeNull ()
 
-	const a = []; db.pool = {trackerClass, logger: {log: m => a.push (m.message)}}
-
 	const call = await db.do ({sql: 'COMMIT', params: []})
+
+	const a = s.trim ().split ('\n').map (s => s.trim ())
+
+	db.pool.logger.remove (tr)
 
 	expect (call.sql).toBe ('COMMIT')
 	expect (call.options.maxRows).toBe (0)
 	expect (a).toHaveLength (2)
-	expect (a [0]).toMatch (/ > /)
-	expect (a [1]).toMatch (/ < /)
-	
+	expect (a [0]).toBe ('1/2/db/1 COMMIT []')
+	expect (a [1]).toMatch (/^1\/2\/db\/1 \d+ ms$/)
 })
 
 test ('insert', async () => {

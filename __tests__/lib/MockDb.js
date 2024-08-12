@@ -1,14 +1,18 @@
 const Path = require ('path')
 const {Readable} = require ('stream')
 const {Application} = require ('doix')
-	const {DbClient, DbLang, DbModel, DbPool} = require ('../..')
-
-const pool = new DbPool ({
-	logger: {log: m =>
-//console.log (m)		 
-		null
-	}
+const {DbClient, DbLang, DbModel, DbPool} = require ('../..')
+const {Tracker}  = require ('events-to-winston')
+const {Writable} = require ('stream')
+const winston = require ('winston')
+const logger = winston.createLogger({
+	transports: [
+//	  new winston.transports.Console (),
+	  new winston.transports.Stream ({stream: new Writable ({write(){}})})
+	]
 })
+
+const pool = new DbPool ({logger})
 
 const src = Path.join (__dirname, '..', 'data', 'root1')
 
@@ -20,7 +24,7 @@ const RS = [
 const COLS = Object.keys (RS [0]).map (name => ({name}))
 
 const app = new Application ({
-	modules: {dir: {root: __dirname}}
+	modules: {dir: {root: __dirname}}, logger
 })
 
 module.exports = class extends DbClient {
@@ -31,9 +35,11 @@ module.exports = class extends DbClient {
 
 		super ()
 
+		this.name = 'db'
+
 		this.app = app
 
-		this.job = {tracker: {prefix: '1/2'}}
+		this.job = {[Tracker.LOGGING_ID]: '1/2'}
 
 		this.pool = pool
 		

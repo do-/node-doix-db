@@ -2,7 +2,6 @@ const DbQueryBinary = require ('./lib/query/DbQueryBinary.js')
 
 module.exports = {
 
-	DbCallTracker : require ('./lib/DbCallTracker.js'),
 	DbClient:       require ('./lib/DbClient.js'),
 	DbPool:         require ('./lib/DbPool.js'), 
 	DbLang:         require ('./lib/DbLang.js'),

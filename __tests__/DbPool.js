@@ -1,23 +1,22 @@
-const {ConsoleLogger} = require ('doix')
 const {DbPool, DbLang, DbModel, DbCallTracker, DbRelation, DbTable, DbView} = require ('..')
 const Path = require ('path')
 const EventEmitter = require ('events')
 
-const src = Path.join (__dirname, 'data', 'root1')
-
-test ('pojo', () => {
-
-	const pool = new DbPool ({trackerClass: Object})
-
-	expect (pool.trackerClass).toBe (Object)
-
+const {Writable} = require ('stream')
+const winston = require ('winston')
+const logger = winston.createLogger({
+	transports: [
+//	  new winston.transports.Console (),
+	  new winston.transports.Stream ({stream: new Writable ({write(){}})})
+	]
 })
+
+
+const src = Path.join (__dirname, 'data', 'root1')
 
 test ('model', async () => {
 
 	jest.resetModules ()
-
-	const logger = ConsoleLogger.DEFAULT
 
 	class MyPool extends DbPool {
 		constructor () {

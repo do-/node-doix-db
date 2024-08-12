@@ -1,5 +1,6 @@
 const MockDb = require ('./lib/MockDb.js')
 const {Readable, Writable} = require ('stream')
+const winston = require ('winston')
 
 test ('misc', async () => {
 
@@ -16,38 +17,43 @@ test ('misc', async () => {
 
 test ('doAll array', async () => {
 
-	const db = new MockDb (), {trackerClass} = db.pool
+	const db = new MockDb ()
 
-	const a = []; db.pool = {trackerClass, logger: {log: m => a.push (m.message)}}
+//	const a = [];
+
+	let s = ''
+
+	const stream = new Writable ({
+		write (r, _, cb) {
+			s += r.toString ()
+			cb ()
+		}
+		
+	})
+
+	const tr = new winston.transports.Stream ({
+		stream,
+		format: winston.format.printf ((i => `${i.id} ${i.event === 'finish' ? i.elapsed + ' ms' : i.message}${i.details ? ' ' + JSON.stringify (i.details.params) : ''}`))
+	})
+
+	db.pool.logger.add (tr)
 
 	await db.doAll ([
 		'COMMIT',
 		['COMMIT'],
 	])
 
-	expect (a).toHaveLength (4)
-	expect (a [0]).toMatch (/ > /)
-	expect (a [1]).toMatch (/ < /)
-	expect (a [2]).toMatch (/ > /)
-	expect (a [3]).toMatch (/ < /)
-	
-})
-
-test ('doAll stream', async () => {
-
-	const db = new MockDb (), {trackerClass} = db.pool
-
-	const a = []; db.pool = {trackerClass, logger: {log: m => a.push (m.message)}}
-
 	await db.doAll (Readable.from ([
 		['COMMIT', []],
 		{sql: 'COMMIT'},
 	]))
 
-	expect (a).toHaveLength (4)
-	expect (a [0]).toMatch (/ > /)
-	expect (a [1]).toMatch (/ < /)
-	expect (a [2]).toMatch (/ > /)
-	expect (a [3]).toMatch (/ < /)
-	
+	db.pool.logger.remove (tr)
+
+	const a = s.trim ().split ('\n').map (s => s.trim ())
+
+	expect (a).toHaveLength (8)
+
+	for (let i = 1; i <= 4; i ++) expect (a [2 * (i - 1)]).toBe (`1/2/db/${i} COMMIT []`)
+
 })
