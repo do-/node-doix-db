@@ -46,7 +46,7 @@ test ('model', async () => {
 	pool.acquire = () => ({})
 	pool.wrapper = EventEmitter
 		
-	await pool.toSet (job, 'db')
+	await pool.setResource (job, 'db')
 	
 	expect (job.db.__f).toBe (true)
 	expect (job.db.model).toBe (model)
