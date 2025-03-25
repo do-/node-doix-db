@@ -6,6 +6,7 @@ test ('bad', () => {
 	expect (() => new DbRelation ({name: 't', pk: []})).toThrow ()
 	expect (() => new DbRelation ({name: 't', columns: 0, pk: []})).toThrow ()
 	expect (() => new DbRelation ({name: 't', columns: {}, pk: ['id']})).toThrow ()
+	expect (() => new DbRelation ({name: 't', columns: function () {return ''}, pk: []})).toThrow ()
 
 })
 
@@ -38,6 +39,23 @@ test ('good', () => {
 
 	expect (r.columns.label.type).toBe ('text')
 	expect (r.columns.label.nullable).toBe (true)
+
+	expect (r.pk).toStrictEqual (['id'])
+
+})
+
+test ('good columns is function', () => {
+
+	const r = new DbRelation ({
+		name: 't',
+		columns: function () { return {
+			id: {type: 'int'},
+		}},
+		pk: 'id',
+	})
+
+	expect (r.columns.id.type).toBe ('int')
+	expect (r.columns.id.nullable).toBe (false)
 
 	expect (r.pk).toStrictEqual (['id'])
 
