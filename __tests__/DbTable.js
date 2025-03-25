@@ -5,5 +5,26 @@ test ('bad', () => {
 	expect (() => new DbTable ({})).toThrow ()
 	expect (() => new DbTable ({name: 't'})).toThrow ()
 	expect (() => new DbTable ({name: 't', columns: {}, triggers: ''})).toThrow ()
+	expect (() => new DbTable ({name: 't', columns: function () {return ''}, data: function () {return ''}})).toThrow ()
+})
 
+test ('good', () => {
+
+	const r = new DbTable ({
+		name: 't',
+		columns: function () { return {
+			id: {type: 'int'},
+		}},
+		pk: 'id',
+		data: function () { return [{
+			id: 1
+		}]}
+	})
+
+	expect (r.columns.id.type).toBe ('int')
+	expect (r.columns.id.nullable).toBe (false)
+
+	expect (r.pk).toStrictEqual (['id'])
+
+	expect (r.data).toStrictEqual ([{id: 1}])
 })
