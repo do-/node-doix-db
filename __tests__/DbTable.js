@@ -12,13 +12,23 @@ test ('good', () => {
 
 	const r = new DbTable ({
 		name: 't',
-		columns: function () { return {
-			id: {type: 'int'},
-		}},
+		columns: function () {
+
+			expect (this instanceof DbTable).toBe(true)
+
+			expect (this.name).toBe('t')
+
+			return { id: {type: 'int'} }
+		},
 		pk: 'id',
-		data: function () { return [{
-			id: 1
-		}]}
+		data: function () {
+
+			expect (this instanceof DbTable).toBe(true)
+
+			expect (this.name).toBe('t')
+
+			return [ {id: 1} ]
+		}
 	})
 
 	expect (r.columns.id.type).toBe ('int')
