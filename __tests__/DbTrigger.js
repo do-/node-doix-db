@@ -1,4 +1,5 @@
 const DbTrigger = require ('../lib/model/DbTrigger.js')
+const DbTable = require ('../lib/model/DbTable.js')
 const DbModel = require ('../lib/model/DbModel.js')
 
 test ('bad', () => {
@@ -24,7 +25,15 @@ test ('not bad', () => {
 		pk: ['id'],
 		triggers: [
 			{name: 't', phase: 'BEFORE UPDATE', sql: 'NULL;'},
-			{name: 't1', phase: 'AFTER UPDATE', sql: function () {return 'NULL;'}},
+			{name: 't1', phase: 'AFTER UPDATE', sql: function () {
+
+				expect (this instanceof DbTrigger).toBe(true)
+				expect (this.table instanceof DbTable).toBe(true)
+				expect (this.table.name).toBe('users')
+				expect (this.table.model).toStrictEqual (m)
+
+				return 'NULL;'
+			}},
 		]
 	})
 
@@ -37,5 +46,9 @@ test ('not bad', () => {
 	const [t1] = m.find ('users').triggers
 
 	expect (t1.sql).toBe ('NULL;')
+
+	expect (t1.table.name).toBe ('users')
+
+	expect (t1.table.model).toStrictEqual (m)
 
 })

@@ -48,9 +48,14 @@ test ('good columns is function', () => {
 
 	const r = new DbRelation ({
 		name: 't',
-		columns: function () { return {
-			id: {type: 'int'},
-		}},
+		columns: function () {
+
+			expect (this instanceof DbRelation).toBe(true)
+
+			expect (this.name).toBe('t')
+
+			return { id: {type: 'int'} }
+		},
 		pk: 'id',
 	})
 
