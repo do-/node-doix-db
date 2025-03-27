@@ -28,7 +28,23 @@ test ('good', () => {
 			expect (this.name).toBe('t')
 
 			return [ {id: 1} ]
-		}
+		},
+		triggers: [
+			{
+				phase  : 'BEFORE INSERT',
+				action : 'FOR EACH ROW',
+				sql    : /*sql*/`
+					BEGIN
+						RETURN NEW;
+					END;
+				`,
+			},
+			{
+				phase  : 'AFTER INSERT',
+				action : 'FOR EACH ROW',
+				sql    : null,
+			},
+		],
 	})
 
 	expect (r.columns.id.type).toBe ('int')

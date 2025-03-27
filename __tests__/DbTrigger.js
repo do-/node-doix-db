@@ -11,7 +11,7 @@ test ('bad', () => {
 	expect (() => new DbTrigger ({name: 't', phase: 'BEFORE', sql: 1})).toThrow ()
 	expect (() => new DbTrigger ({name: 't', phase: true, sql: 'NULL;'})).toThrow ()
 	expect (() => new DbTrigger ({name: 't', phase: true, sql: function () {return ''}})).toThrow ()
-
+	expect (() => new DbTrigger ({name: 't', phase: true, sql: null})).toThrow ()
 })
 
 test ('not bad', () => {
@@ -25,6 +25,7 @@ test ('not bad', () => {
 		pk: ['id'],
 		triggers: [
 			{name: 't', phase: 'BEFORE UPDATE', sql: 'NULL;'},
+			{name: 't', phase: 'BEFORE UPDATE', sql: 'NULL;'},
 			{name: 't1', phase: 'AFTER UPDATE', sql: function () {
 
 				expect (this instanceof DbTrigger).toBe(true)
@@ -34,6 +35,7 @@ test ('not bad', () => {
 
 				return 'NULL;'
 			}},
+			{name: 't', phase: 'BEFORE UPDATE', sql: null},
 		]
 	})
 
