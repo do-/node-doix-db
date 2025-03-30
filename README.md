@@ -9,4 +9,8 @@
 * [DbMigrationPlan](https://github.com/do-/node-doix-db/wiki/DbMigrationPlan) — a `DbModel` based deployment automation tool;
 * [DbLang](https://github.com/do-/node-doix-db/wiki/DbLang) — a set of SQL generating functions for miscellaneous application tasks.
 
-* More information is available at https://github.com/do-/node-doix-db/wiki
+Has backends for 
+* [PostgreSQL](https://github.com/do-/node-doix-db-postgresql),
+* [ClickHouse](https://github.com/do-/node-doix-db-clickhouse).
+
+More information is available at https://github.com/do-/node-doix-db/wiki
