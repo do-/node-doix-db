@@ -5,8 +5,12 @@ module.exports = {
     columns: {
         uuid     : 'uuid    // PK',
         label    : 'string!  // Human Readable Label',
-        is_actual: 'boolean!  // Is actual',
+        is_actual: 'boolean!  // Is actual',        
         id_role  : '(roles)=2 // Role',
+
+        old_slack: null,
+        long_gone: null,
+
     },
     
     pk: 'uuid',

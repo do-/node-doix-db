@@ -87,6 +87,7 @@ module.exports = class extends DbClient {
 					uuid: {type: 'uuid', comment: 'PK'}, 
 					label: {type: 'text', comment: 'Human Readable Label'}, 
 					is_actual: {type: 'boolean', comment: 'Is actual ?'}, 
+					old_slack: {type: 'text', comment: 'A column to drop'},			
 				}, 
 				pk: ['uuid']
 			},

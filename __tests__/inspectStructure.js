@@ -44,9 +44,14 @@ test ('main', async () => {
 	
 	plan.toBe.set ('v', new DbView ({name: 'v', sql: 'SELECT 1 id', columns: {id: 'int'}}))
 	
+
 	await plan.loadStructure ()
 
+	const oddCols = []; plan.on ('no-column-to-drop', (t, c) => oddCols.push ([t.name, c]))
+
 	plan.inspectStructure ()
+
+	expect (oddCols).toStrictEqual ([['users', 'long_gone']])
 
 	const {toDo} = plan
 
@@ -56,7 +61,12 @@ test ('main', async () => {
 	expect (toDo.get ('create').map (i => i.name).sort ()).toStrictEqual (['roles', 'users_roles'])
 	expect (toDo.get ('recreate').map (i => i.fullName).sort ()).toStrictEqual (['do_it', 'get_time', 'log.pro', 'v', 'vw_roles'])
 
-	expect (plan.asIs.get ('users').toDo.get ('add-column').map (i => i.name).sort ()).toStrictEqual (['id_role'])
+	{
+		const {toDo} = plan.asIs.get ('users')
+		expect ([...toDo.keys ()].sort ()).toStrictEqual (['add-column', 'alter-column', 'drop-column'])
+		expect (toDo.get ('add-column').map (i => i.name).sort ()).toStrictEqual (['id_role'])
+		expect (toDo.get ('drop-column')).toStrictEqual (['old_slack'])
+	}
 
 	expect ([...plan.genDDL ()]).toStrictEqual ([])
 	const SQL = Symbol ()
