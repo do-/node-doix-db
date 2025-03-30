@@ -30,10 +30,14 @@ test ('good', () => {
 		columns: {
 			id: {type: 'int'},
 			label: 'text',
+			old_slack: null,
 		},	
 		pk: 'id',
 	})
-	
+
+	expect (Object.keys (r.columns)).toHaveLength (2)
+	expect (r.columnsToDrop).toStrictEqual (['old_slack'])
+
 	expect (r.columns.id.type).toBe ('int')
 	expect (r.columns.id.nullable).toBe (false)
 
