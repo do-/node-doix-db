@@ -287,6 +287,12 @@ test ('genColumnDefault', () => {
 		)
 	).toBe ("NULL")
 
+	expect (	
+		lang.genColumnDefault (
+			{default: 'NOW()'}
+		)
+	).toBe ("NOW()")
+
 })
 
 test ('genColumnDefinition', () => {
