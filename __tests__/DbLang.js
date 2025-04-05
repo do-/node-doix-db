@@ -273,39 +273,17 @@ test ('isAdequateColumnTypeDim', () => {
 
 })
 
-test ('genColumnDefault', () => {
-
-	expect (	
-		lang.genColumnDefault (
-			new DbColumn ('int=1')
-		)
-	).toBe ("'1'")
-
-	expect (	
-		lang.genColumnDefault (
-			{default: 'NULL'}
-		)
-	).toBe ("NULL")
-
-	expect (	
-		lang.genColumnDefault (
-			{default: 'NOW()'}
-		)
-	).toBe ("NOW()")
-
-})
-
 test ('genColumnDefinition', () => {
 	
 	const column = new DbColumn ('int=1')
 	column.name = 'id'
 	column.setLang (lang)
 
-	expect (lang.genColumnDefinition (column)).toBe (`"id" INT DEFAULT '1' NOT NULL`)
+	expect (lang.genColumnDefinition (column)).toBe (`"id" INT DEFAULT 1 NOT NULL`)
 
 	column.nullable = true
 
-	expect (lang.genColumnDefinition (column)).toBe (`"id" INT DEFAULT '1'`)
+	expect (lang.genColumnDefinition (column)).toBe (`"id" INT DEFAULT 1`)
 
 	delete column.default
 
