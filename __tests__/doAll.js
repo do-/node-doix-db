@@ -14,6 +14,24 @@ test ('misc', async () => {
 
 })
 
+test ('doAll error', async () => {
+
+	const db = new MockDb ()
+
+	try {
+
+	 	await db.doAll (['COMMIT',['']])
+
+	}
+	catch (e) {
+
+		var {stack} = e
+
+	}
+
+	expect (stack).toMatch ('doAll.js:23:4')
+
+})
 
 test ('doAll array', async () => {
 
