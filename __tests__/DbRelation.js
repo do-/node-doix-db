@@ -1,4 +1,6 @@
-const {DbRelation} = require ('..')
+const {DbRelation, DbLang} = require ('..')
+
+const lang = new DbLang ()
 
 test ('bad', () => {
 
@@ -29,7 +31,7 @@ test ('good', () => {
 		name: 't',
 		columns: {
 			id: {type: 'int'},
-			label: 'text',
+			label: lang.parseColumn ('text'),
 			old_slack: null,
 		},	
 		pk: 'id',
@@ -58,7 +60,7 @@ test ('good columns is function', () => {
 
 			expect (this.name).toBe('t')
 
-			return { id: {type: 'int'} }
+			return { id: lang.parseColumn ('int') }
 		},
 		pk: 'id',
 	})

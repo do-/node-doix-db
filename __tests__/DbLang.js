@@ -13,6 +13,15 @@ const src = Path.join (__dirname, 'data', 'root1')
 
 const lang = new DbLang ()
 
+const newCol = src => {
+
+	if (typeof src === 'string') src = lang.parseColumn (src)
+
+	return new  DbColumn (src)
+
+}
+
+
 test ('getDbObjectClass', () => {
 
 	expect (() => lang.getDbObjectClass ()).toThrow ()
@@ -171,50 +180,50 @@ test ('isAdequateColumnTypeDim', () => {
 
 	expect (	
 		lang.isAdequateColumnTypeDim (
-			new DbColumn ('int'),
-			new DbColumn ('int')
+			newCol ('int'),
+			newCol ('int')
 		)
 	).toBe (true)
 
 	expect (	
 		lang.isAdequateColumnTypeDim (
-			new DbColumn ('int'),
-			new DbColumn ('smallint=0')
+			newCol ('int'),
+			newCol ('smallint=0')
 		)
 	).toBe (true)
 
 	expect (	
 		lang.isAdequateColumnTypeDim (
-			new DbColumn ('varchar(255)'),
-			new DbColumn ('varchar(10)')
+			newCol ('varchar(255)'),
+			newCol ('varchar(10)')
 		)
 	).toBe (true)
 
 	expect (	
 		lang.isAdequateColumnTypeDim (
-			new DbColumn ('char(5)'),
-			new DbColumn ('char(10)')
+			newCol ('char(5)'),
+			newCol ('char(10)')
 		)
 	).toBe (false)
 
 	expect (	
 		lang.isAdequateColumnTypeDim (
-			new DbColumn ('decimal(10, 3)'),
-			new DbColumn ('numeric(5, 2)')
+			newCol ('decimal(10, 3)'),
+			newCol ('numeric(5, 2)')
 		)
 	).toBe (true)
 
 	expect (	
 		lang.isAdequateColumnTypeDim (
-			new DbColumn ('decimal(5, 3)'),
-			new DbColumn ('numeric(10, 3)')
+			newCol ('decimal(5, 3)'),
+			newCol ('numeric(10, 3)')
 		)
 	).toBe (false)
 
 	expect (	
 		lang.isAdequateColumnTypeDim (
-			new DbColumn ('decimal(10, 2)'),
-			new DbColumn ('numeric(5, 3)')
+			newCol ('decimal(10, 2)'),
+			newCol ('numeric(5, 3)')
 		)
 	).toBe (false)
 
@@ -224,50 +233,50 @@ test ('isAdequateColumnTypeDim', () => {
 
 	expect (	
 		lang.isAdequateColumnTypeDim (
-			new DbColumn ('int'),
-			new DbColumn ('int')
+			newCol ('int'),
+			newCol ('int')
 		)
 	).toBe (true)
 
 	expect (	
 		lang.isAdequateColumnTypeDim (
-			new DbColumn ('int'),
-			new DbColumn ('smallint=0')
+			newCol ('int'),
+			newCol ('smallint=0')
 		)
 	).toBe (true)
 
 	expect (	
 		lang.isAdequateColumnTypeDim (
-			new DbColumn ('varchar(255)'),
-			new DbColumn ('varchar(10)')
+			newCol ('varchar(255)'),
+			newCol ('varchar(10)')
 		)
 	).toBe (true)
 
 	expect (	
 		lang.isAdequateColumnTypeDim (
-			new DbColumn ('char(5)'),
-			new DbColumn ('char(10)')
+			newCol ('char(5)'),
+			newCol ('char(10)')
 		)
 	).toBe (false)
 
 	expect (	
 		lang.isAdequateColumnTypeDim (
-			new DbColumn ('decimal(10, 3)'),
-			new DbColumn ('numeric(5, 2)')
+			newCol ('decimal(10, 3)'),
+			newCol ('numeric(5, 2)')
 		)
 	).toBe (true)
 
 	expect (	
 		lang.isAdequateColumnTypeDim (
-			new DbColumn ('decimal(5, 3)'),
-			new DbColumn ('numeric(10, 3)')
+			newCol ('decimal(5, 3)'),
+			newCol ('numeric(10, 3)')
 		)
 	).toBe (false)
 
 	expect (	
 		lang.isAdequateColumnTypeDim (
-			new DbColumn ('decimal(10, 2)'),
-			new DbColumn ('numeric(5, 3)')
+			newCol ('decimal(10, 2)'),
+			newCol ('numeric(5, 3)')
 		)
 	).toBe (false)
 
@@ -275,7 +284,7 @@ test ('isAdequateColumnTypeDim', () => {
 
 test ('genColumnDefinition', () => {
 	
-	const column = new DbColumn ('int=1')
+	const column = newCol ('int=1')
 	column.name = 'id'
 	column.setLang (lang)
 
@@ -295,43 +304,43 @@ test ('compareColumns', () => {
 
 	expect (	
 		lang.compareColumns (
-			new DbColumn ('int'),
-			new DbColumn ('int')
+			newCol ('int'),
+			newCol ('int')
 		)
 	).toStrictEqual ([])
 
 	expect (	
 		lang.compareColumns (
-			new DbColumn ('int'),
-			new DbColumn ('int!')
+			newCol ('int'),
+			newCol ('int!')
 		)
 	).toStrictEqual (['nullable'])
 
 	expect (	
 		lang.compareColumns (
-			new DbColumn ('int!'),
-			new DbColumn ('int=0')
+			newCol ('int!'),
+			newCol ('int=0')
 		)
 	).toStrictEqual (['default'])
 
 	expect (	
 		lang.compareColumns (
-			new DbColumn ('bigint'),
-			new DbColumn ('int')
+			newCol ('bigint'),
+			newCol ('int')
 		)
 	).toStrictEqual ([])
 
 	expect (	
 		lang.compareColumns (
-			new DbColumn ('int'),
-			new DbColumn ('bigint')
+			newCol ('int'),
+			newCol ('bigint')
 		)
 	).toStrictEqual (['typeDim'])
 
 	expect (	
 		lang.compareColumns (
-			new DbColumn ('numeric(5,2)'),
-			new DbColumn ('numeric(10,2)')
+			newCol ('numeric(5,2)'),
+			newCol ('numeric(10,2)')
 		)
 	).toStrictEqual (['typeDim'])
 

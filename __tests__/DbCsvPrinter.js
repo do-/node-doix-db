@@ -82,7 +82,7 @@ test ('infty', async () => {
 
 		const p = new DbCsvPrinter ({
 			lang: new DbLang (),
-			columns: {id: 'int'},
+			columns: {id: {type: 'int'}},
 		})
 
 		await new Promise ((ok, fail) => {
