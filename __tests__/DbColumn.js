@@ -53,14 +53,14 @@ test ('pattern', () => {
 
 test ('range', () => {
 
-	tst ('int {0..10}', {type: 'int', min: '0', max: '10', nullable: true})
-	tst ('int {0..}', {type: 'int', min: '0', nullable: true})
-	tst ('int {..10}', {type: 'int', max: '10', nullable: true})
+	tst ('int [0..10]', {type: 'int', min: '0', max: '10', nullable: true})
+	tst ('int [0..]', {type: 'int', min: '0', nullable: true})
+	tst ('int [..10]', {type: 'int', max: '10', nullable: true})
 
-	tst ('date = 1980-01-01 { 1970-01-01 .. NOW  }   /-01$/ // created ', {type: 'date', min: '1970-01-01', default: '1980-01-01', max: 'NOW', pattern: '-01$', comment: 'created', nullable: false})
+	tst ('date = 1980-01-01 [ 1970-01-01 .. NOW  ]   /-01$/ // created ', {type: 'date', min: '1970-01-01', default: '1980-01-01', max: 'NOW', pattern: '-01$', comment: 'created', nullable: false})
 
-	expect (() => newCol ('date }')).toThrow ()
-	expect (() => newCol ('date {}')).toThrow ()
+	expect (() => newCol ('date ]')).toThrow ()
+	expect (() => newCol ('date []')).toThrow ()
 
 })
 
@@ -69,7 +69,7 @@ test ('dimension', () => {
 	tst ('char(1)', {type: 'char', size: 1, nullable: true})
 	tst ('decimal (10, 2)', {type: 'decimal', size: 10, scale: 2, nullable: true})
 
-	tst (' \t \t decimal (10, 2) = 0 { 0.00 .. 1000.00 } /00$/ // \t\t\t salary ', {
+	tst (' \t \t decimal (10, 2) = 0 [ 0.00 .. 1000.00 ] /00$/ // \t\t\t salary ', {
 		type: 'decimal', 
 		size: 10,
 		scale: 2,
@@ -92,7 +92,7 @@ test ('nullable', () => {
 	tst ('int!', {type: 'int', nullable: false})
 	tst ('int?=0', {type: 'int', default: '0', nullable: true})
 	
-	tst (' \t \t decimal (10, 2) ?= 0 { 0.00 .. 1000.00 } /00$/ // \t\t\t salary ', {
+	tst (' \t \t decimal (10, 2) ?= 0 [ 0.00 .. 1000.00 ] /00$/ // \t\t\t salary ', {
 		type: 'decimal', 
 		size: 10,
 		scale: 2,
@@ -104,7 +104,7 @@ test ('nullable', () => {
 		nullable: true,
 	})	
 
-	tst (' \t \t decimal (10, 2) ! { 0.00 .. 1000.00 } /00$/ // \t\t\t salary ', {
+	tst (' \t \t decimal (10, 2) ! [ 0.00 .. 1000.00 ] /00$/ // \t\t\t salary ', {
 		type: 'decimal', 
 		size: 10,
 		scale: 2,
