@@ -104,7 +104,7 @@ test ('nullable', () => {
 		nullable: true,
 	})	
 
-	tst (' \t \t decimal (10, 2) ! [ 0.00 .. 1000.00 ] /00$/ // \t\t\t salary ', {
+	tst (` \t \t decimal (10, 2) ! [ 0.00 .. 1000.00 ] /00$/ {compression: '{gz}', ttl: 600} // \t\t\t salary `, {
 		type: 'decimal', 
 		size: 10,
 		scale: 2,
@@ -113,9 +113,12 @@ test ('nullable', () => {
 		pattern: '00$', 
 		comment: 'salary',
 		nullable: false,
+		compression: '{gz}', 
+		ttl: 600,
 	})
 	
 	expect (() => newCol ('=0')).toThrow ()
+	expect (() => newCol ('int=0}')).toThrow ()
 
 })
 
