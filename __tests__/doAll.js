@@ -51,7 +51,7 @@ test ('doAll array', async () => {
 
 	const tr = new winston.transports.Stream ({
 		stream,
-		format: winston.format.printf ((i => `${i.id} ${i.event === 'finish' ? i.elapsed + ' ms' : i.message}${i.details ? ' ' + JSON.stringify (i.details.params) : ''}`))
+		format: winston.format.printf ((i => `${i.id} ${i.event === 'finish' ? i.elapsed + ' ms' : i.message}${i.details ? ' ' + JSON.stringify (i.details) : ''}`))
 	})
 
 	db.pool.logger.add (tr)
