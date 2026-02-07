@@ -47,15 +47,17 @@ test ('print', async () => {
 			dt: 'date',
 			ts: 'timestamp',
 			mass: 'real',
+			flag: 'bool',
 		},
 		NULL: '\\N',
+		TRUE: 'Y',
 	})
 
 	const epoch = new Date (1970, 0, 1, 0, 0, 0)
 
 	Readable.from ([
-		{id: false, label: 'zero', amount: 0, dt: epoch, ts: epoch, mass: '1.23'},
-		{id: true, label: 'the "one"', amount: Math.sqrt (2), dt: '1980-01-01 ', mass: 0},
+		{id: 0, label: 'zero', amount: 0, dt: epoch, ts: epoch, mass: '1.23', flag: true},
+		{id: 1, label: 'the "one"', amount: Math.sqrt (2), dt: '1980-01-01 ', mass: 0, flag: false},
 		{id: 2, label: 'two'},
 	]).pipe (p)
 
@@ -68,9 +70,9 @@ test ('print', async () => {
 	s += decoder.end ()
 
 	expect (s.split (/\n/)).toStrictEqual ([
-        '0,"zero",0.00,1970-01-01,1970-01-01 00:00:00,1.23',
-        '1,"the ""one""",1.41,1980-01-01,\\N,0',
-        '2,"two",\\N,\\N,\\N,\\N',
+        '0,"zero",0.00,1970-01-01,1970-01-01 00:00:00,1.23,Y',
+        '1,"the ""one""",1.41,1980-01-01,\\N,0,0',
+        '2,"two",\\N,\\N,\\N,\\N,\\N',
         ''
 	])
 
