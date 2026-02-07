@@ -57,7 +57,7 @@ test ('print', async () => {
 
 	Readable.from ([
 		{id: 0, label: 'zero', amount: 0, dt: epoch, ts: epoch, mass: '1.23', flag: true},
-		{id: 1, label: 'the "one"', amount: Math.sqrt (2), dt: '1980-01-01 ', mass: 0, flag: false},
+		{id: 1, label: 'the "one"', amount: Math.sqrt (2), dt: '1980-01-01 ', mass: Number.NaN, flag: false},
 		{id: 2, label: 'two'},
 	]).pipe (p)
 
@@ -71,7 +71,7 @@ test ('print', async () => {
 
 	expect (s.split (/\n/)).toStrictEqual ([
         '0,"zero",0.00,1970-01-01,1970-01-01 00:00:00,1.23,Y',
-        '1,"the ""one""",1.41,1980-01-01,\\N,0,0',
+        '1,"the ""one""",1.41,1980-01-01,\\N,NaN,0',
         '2,"two",\\N,\\N,\\N,\\N,\\N',
         ''
 	])
@@ -104,7 +104,7 @@ test ('infty', async () => {
 
 test ('not int', async () => {
 
-	for (const dt of ['?'])  try {
+	for (const dt of ['?', 3.14])  try {
 
 		const p = new DbCsvPrinter ({
 			lang: new DbLang (),
@@ -201,7 +201,7 @@ test ('not date', async () => {
 
 test ('not ts', async () => {
 
-	for (const dt of [Symbol (), '?'])  try {
+	for (const dt of [Symbol (), '?', Number.NaN])  try {
 
 		const p = new DbCsvPrinter ({
 			lang: new DbLang (),
